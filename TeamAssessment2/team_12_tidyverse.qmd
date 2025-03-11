@@ -86,3 +86,10 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
 
 
 # Reflection on the Use of GenAI (10%)
+For this assessment, our team utilized ChatGPT (Generative AI) as a tool to assist with various tasks. The tool proved to be incredibly beneficial in several ways. First, it helped us brainstorm ideas for Exercise 2, where we needed to find a real-world dataset. ChatGPT suggested potential sources and criteria for selecting a suitable dataset, which saved us significant time. Additionally, it provided guidance on R syntax and tidyverse functions, especially for Exercise 1, where we had to manipulate and visualize EPL data. This was particularly helpful for debugging code and understanding how to structure the league table.
+
+One of the most significant benefits of using GenAI was its ability to explain complex concepts in simple terms. For instance, when creating visualizations in Exercise 3, ChatGPT clarified the differences between box plots, violin plots, and histograms, helping us decide which plot would be most informative. It also provided examples of how to customize plots using ggplot2, which improved the quality of our visualizations.
+
+However, there were challenges as well. While GenAI is powerful, it sometimes provided overly verbose or generic responses that required further refinement. For example, when generating R code, we often had to tweak the output to fit our specific dataset or requirements. Additionally, the tool occasionally lacked context awareness, leading to suggestions that were not entirely relevant to our tasks.
+
+Overall, our experience with GenAI was positive. It served as a valuable assistant, enhancing our productivity and understanding of the material. That said, it is essential to use it critically and not rely solely on its outputs. We believe GenAI is a powerful tool for learning and problem-solving, but it works best when combined with human judgment and creativity.
