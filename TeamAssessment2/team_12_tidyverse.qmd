@@ -28,12 +28,13 @@ library(dplyr)
 library(tidyr)
 library(readr)
 library(stringr)
+library(ggplot2)
+library(scales)
+library(tibble)
 ```
 
 
 # Converting Football Scores into a League Table (30%)
-
-
 ## Generating a League Table
 ```{r}
 epl_results <- read_csv("epl_results.csv", show_col_types = FALSE)
@@ -203,17 +204,9 @@ duplicates <- filtered_data |>  # Filter for Ang Mo Kio
 duplicates
 ```
 
-
-
 ## Generating a Scatter Plot Using `geom_point()`
 
 ```{r, message=FALSE, warning=FALSE}
-
-# Load necessary libraries
-library(ggplot2)
-library(dplyr)
-library(scales)
-
 # Generate scatter plot using filtered data (Ang Mo Kio, 1990)
 ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
   geom_point() +  
@@ -231,7 +224,7 @@ ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
 
 ## Producing and Discussing Two Distinct Plots Designed to Mitigate Overplotting
 
-### 1. Scatter Plot with Transparency
+### Scatter Plot with Transparency
 ```{r}
 ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
   geom_point(alpha = 0.1) +  # Reduces opacity to show density
@@ -252,7 +245,7 @@ ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
 #### ❌ Disadvantages:
 - In **highly dense** areas, points still **overlap**.
 
-### 2. Scatter Plot with Jittering 
+### Scatter Plot with Jittering 
 ```{r}
 ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
   geom_jitter(width = 2, height = 5000, alpha = 0.2) +  # Adds slight randomness
@@ -277,7 +270,7 @@ ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
 
 ## Creating Two Distinct Smoothing Interpolations
 
-### 1. Linear Regression Smoothing
+### Linear Regression Smoothing
 ```{r}
 ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
   geom_point(alpha = 0.1) +  
@@ -300,7 +293,7 @@ ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
 #### ❌ Disadvantages:
 - **Cannot capture non-linear trends** in the data.
 
-### 2. LOESS (Locally Estimated ScatterPlot Smoothing)
+### LOESS (Locally Estimated ScatterPlot Smoothing)
 ```{r}
 ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
   geom_point(alpha = 0.1) +  
@@ -327,10 +320,6 @@ ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
 
 ## Converting the `Expt` Column to a Factor
 ```{r}
-# Load necessary libraries
-library(dplyr)
-library(tibble)
-
 # Load the morley dataset
 data(morley)
 
