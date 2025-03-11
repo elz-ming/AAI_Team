@@ -3,7 +3,7 @@ title: "Week 10 Lab: Applications of Tidyverse Skills"
 from: markdown+emoji
 subtitle: AAI1001 -- Data Engineering and Visualization<br>AY24/25 Tri 2 (Assisted by GenAI)<br>Exercise 5 (Teamwork 2)
 author:  
-  name: Team [Insert your Team ID]
+  name: Team 12 (Lionel, Zhenming, Shaidah, Rachel, Cholo)
   affiliations: Singapore Institute of Technology
 date: 2025-03-11
 date-format: "dddd MMM D, YYYY"
@@ -145,11 +145,11 @@ epl_league_table %>%
     locations = cells_body(rows = rank == 1, columns = team)
   ) %>%
   tab_footnote(
-    footnote = "Top 4 qualified for the Champions League group stage",
+    footnote = md("<span style='color:#A3E4D7'><strong>Top 4 qualified</strong></span> for the Champions League group stage"),
     locations = cells_column_labels(columns = rank)
   ) %>%
   tab_footnote(
-    footnote = "Bottom 3 relegated to EFL Championship",
+    footnote = md("<span style='color:#F5B7B1'><strong>Bottom 3 relegated</strong></span>  EFL Championship"),
     locations = cells_column_labels(columns = rank)
   ) %>%
   tab_source_note(
