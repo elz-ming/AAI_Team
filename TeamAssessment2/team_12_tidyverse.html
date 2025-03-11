@@ -3195,8 +3195,63 @@ vertical-align: -.125em;
 </section>
 <section id="visualizing-michelsons-speed-of-light-measurements-25" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Visualizing Michelson’s Speed-of-Light Measurements (25%)</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(morley)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>morley <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(morley)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>morley</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100 × 3
+    Expt   Run Speed
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+ 1     1     1   850
+ 2     1     2   740
+ 3     1     3   900
+ 4     1     4  1070
+ 5     1     5   930
+ 6     1     6   850
+ 7     1     7   950
+ 8     1     8   980
+ 9     1     9   980
+10     1    10   880
+# ℹ 90 more rows</code></pre>
+</div>
+</div>
 <section id="converting-the-expt-column-to-a-factor" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="converting-the-expt-column-to-a-factor"><span class="header-section-number">3.1</span> Converting the <code>Expt</code> Column to a Factor</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the morley dataset</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(morley)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the dataset to a tibble</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>morley <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(morley)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the Expt column to a factor</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>morley <span class="ot">&lt;-</span> morley <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Expt =</span> <span class="fu">as.factor</span>(Expt))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the updated tibble</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(morley)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 100 × 3
+   Expt    Run Speed
+   &lt;fct&gt; &lt;int&gt; &lt;int&gt;
+ 1 1         1   850
+ 2 1         2   740
+ 3 1         3   900
+ 4 1         4  1070
+ 5 1         5   930
+ 6 1         6   850
+ 7 1         7   950
+ 8 1         8   980
+ 9 1         9   980
+10 1        10   880
+# ℹ 90 more rows</code></pre>
+</div>
+</div>
 </section>
 <section id="scatter-plot-experiment-number-versus-measured-speeds" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="scatter-plot-experiment-number-versus-measured-speeds"><span class="header-section-number">3.2</span> Scatter Plot: Experiment Number versus Measured Speeds</h2>
@@ -3216,6 +3271,10 @@ vertical-align: -.125em;
 </section>
 <section id="reflection-on-the-use-of-genai-10" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Reflection on the Use of GenAI (10%)</h1>
+<p>For this assessment, our team utilized ChatGPT (Generative AI) as a tool to assist with various tasks. The tool proved to be incredibly beneficial in several ways. First, it helped us brainstorm ideas for Exercise 2, where we needed to find a real-world dataset. ChatGPT suggested potential sources and criteria for selecting a suitable dataset, which saved us significant time. Additionally, it provided guidance on R syntax and tidyverse functions, especially for Exercise 1, where we had to manipulate and visualize EPL data. This was particularly helpful for debugging code and understanding how to structure the league table.</p>
+<p>One of the most significant benefits of using GenAI was its ability to explain complex concepts in simple terms. For instance, when creating visualizations in Exercise 3, ChatGPT clarified the differences between box plots, violin plots, and histograms, helping us decide which plot would be most informative. It also provided examples of how to customize plots using ggplot2, which improved the quality of our visualizations.</p>
+<p>However, there were challenges as well. While GenAI is powerful, it sometimes provided overly verbose or generic responses that required further refinement. For example, when generating R code, we often had to tweak the output to fit our specific dataset or requirements. Additionally, the tool occasionally lacked context awareness, leading to suggestions that were not entirely relevant to our tasks.</p>
+<p>Overall, our experience with GenAI was positive. It served as a valuable assistant, enhancing our productivity and understanding of the material. That said, it is essential to use it critically and not rely solely on its outputs. We believe GenAI is a powerful tool for learning and problem-solving, but it works best when combined with human judgment and creativity.</p>
 </section>
 
 </main>
