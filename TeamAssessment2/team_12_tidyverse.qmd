@@ -1,0 +1,81 @@
+---
+title: "Week 10 Lab: Applications of Tidyverse Skills"
+from: markdown+emoji
+subtitle: AAI1001 -- Data Engineering and Visualization<br>AY24/25 Tri 2 (Assisted by GenAI)<br>Exercise 5 (Teamwork 2)
+author:  
+  name: Team [Insert your Team ID]
+  affiliations: Singapore Institute of Technology
+date: 2025-03-11
+date-format: "dddd MMM D, YYYY"
+format: 
+  html: 
+    toc: true
+    toc-depth: 1
+    toc-location: left
+    number-sections: true
+    number-depth: 3
+    embed-resources: true
+    html-table-processing: none
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(gt)
+```
+
+
+# Converting Football Scores into a League Table (30%)
+
+
+## Generating a League Table
+
+
+## Improving the Visualization Using gt Functions
+
+
+
+# Finding and Visualizing a Real-World Data Set (30%)
+
+
+## Explanation of the Data Set
+
+
+## Validation of Conditions C, D, and E
+
+
+## Generating a Scatter Plot Using `geom_point()`
+
+
+## Producing and Discussing Two Distinct Plots Designed to Mitigate Overplotting
+
+
+## Creating Two Distinct Smoothing Interpolations
+
+
+
+# Visualizing Michelson’s Speed-of-Light Measurements (25%)
+
+
+## Converting the `Expt` Column to a Factor
+
+
+## Scatter Plot: Experiment Number versus Measured Speeds
+
+
+## Creating a Box Plot with One Box per Experiment
+
+
+## Inserting a Violin Plot into the Box Plot
+
+
+## Creating a Faceted Plot Displaying Histograms
+
+
+## Discussion of the Plots
+
+
+
+# Reflection on the Use of GenAI (10%)
