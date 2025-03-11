@@ -39,10 +39,13 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
   as_tibble()
 ```
 
-```{r}
-library(tidyverse)
 
-# Load Data
+```{r}
+library(dplyr)
+library(tidyr)
+library(readr)
+
+# Read CSV files
 epl_results <- read_csv("epl_results.csv", show_col_types = FALSE)
 epl_teams <- read_csv("epl_teams.csv", show_col_types = FALSE)
 
@@ -51,8 +54,8 @@ epl_results_long <- epl_results %>%
   pivot_longer(-home_team, names_to = "away_team", values_to = "score") %>%
   separate(score, into = c("home_goals", "away_goals"), sep = "-", convert = TRUE)
 
-# Compute match points and statistics
-match_results <- epl_results_long %>%
+# Compute match points
+epl_results_long <- epl_results_long %>%
   mutate(
     home_points = case_when(
       home_goals > away_goals ~ 3,
@@ -66,136 +69,52 @@ match_results <- epl_results_long %>%
     )
   )
 
-# Compute cumulative stats for each team
-home_stats <- match_results %>%
+# Compute home and away statistics
+home_stats <- epl_results_long %>%
   group_by(home_team) %>%
   summarise(
-    points = sum(home_points),
-    goals_scored = sum(home_goals)
-  )
-
-away_stats <- match_results %>%
-  group_by(away_team) %>%
-  summarise(
-    points = sum(away_points),
-    goals_scored = sum(away_goals)
-  )
-
-# Merge home and away stats
-total_stats <- full_join(
-  home_stats %>% rename(team = home_team),
-  away_stats %>% rename(team = away_team),
-  by = "team", suffix = c("_home", "_away")
-) %>%
-  mutate(
-    points = points_home + points_away,
-    goals_scored = goals_scored_home + goals_scored_away
-  ) %>%
-  select(team, points, goals_scored)
-
-# Compute goal difference
-total_stats <- match_results %>%
-  group_by(home_team) %>%
-  summarise(goals_conceded_home = sum(away_goals)) %>%
-  full_join(
-    match_results %>%
-      group_by(away_team) %>%
-      summarise(goals_conceded_away = sum(home_goals)),
-    by = c("home_team" = "away_team")
-  ) %>%
-  rename(team = home_team) %>%
-  mutate(
-    goals_conceded = coalesce(goals_conceded_home, 0) + coalesce(goals_conceded_away, 0)
-  ) %>%
-  right_join(total_stats, by = "team") %>%
-  mutate(goal_diff = goals_scored - goals_conceded) %>%
-  select(team, points, goal_diff, goals_scored)
-
-# Rank teams based on points, goal difference, and goals scored
-epl_league_table <- total_stats %>%
-  arrange(desc(points), desc(goal_diff), desc(goals_scored)) %>%
-  mutate(rank = row_number())
-
-# Print the league table
-epl_league_table
-
-```
-
-```{r}
-library(dplyr)
-library(tidyr)
-library(readr)
-library(purrr)
-
-# Read CSV files
-epl_results <- read_csv("epl_results.csv", show_col_types = FALSE)
-epl_teams <- read_csv("epl_teams.csv", show_col_types = FALSE)
-
-# Function to extract match details safely
-calculate_points <- function(home_goals, away_goals) {
-  if (is.na(home_goals) || is.na(away_goals)) return(NA)  # Handle missing values
-  if (home_goals > away_goals) return(3)  # Home win
-  if (home_goals < away_goals) return(0)  # Home loss
-  return(1)  # Draw
-}
-
-# Convert wide format to long format, removing missing values
-results_long <- epl_results %>%
-  pivot_longer(cols = -home_team, names_to = "away_team", values_to = "score") %>%
-  drop_na(score) %>%  # Remove rows where score is missing
-  separate(score, into = c("home_goals", "away_goals"), sep = "-", convert = TRUE)
-
-# Home team statistics
-home_stats <- results_long %>%
-  mutate(
-    points = map2_int(home_goals, away_goals, ~ ifelse(is.na(.x) | is.na(.y), 0, calculate_points(.x, .y))),
-    goal_diff = home_goals - away_goals,
-    goals_scored = home_goals
-  ) %>%
-  group_by(home_team) %>%
-  summarise(
-    points = sum(points, na.rm = TRUE),
-    goal_diff = sum(goal_diff, na.rm = TRUE),
-    goals_scored = sum(goals_scored, na.rm = TRUE),
+    points = sum(home_points, na.rm = TRUE),
+    goals_scored = sum(home_goals, na.rm = TRUE),
+    goals_conceded = sum(away_goals, na.rm = TRUE),
     .groups = "drop"
   ) %>%
   rename(team = home_team)
 
-# Away team statistics
-away_stats <- results_long %>%
-  mutate(
-    points = map2_int(away_goals, home_goals, ~ ifelse(is.na(.x) | is.na(.y), 0, calculate_points(.y, .x))),  # Reverse order
-    goal_diff = away_goals - home_goals,
-    goals_scored = away_goals
-  ) %>%
+away_stats <- epl_results_long %>%
   group_by(away_team) %>%
   summarise(
-    points = sum(points, na.rm = TRUE),
-    goal_diff = sum(goal_diff, na.rm = TRUE),
-    goals_scored = sum(goals_scored, na.rm = TRUE),
+    points = sum(away_points, na.rm = TRUE),
+    goals_scored = sum(away_goals, na.rm = TRUE),
+    goals_conceded = sum(home_goals, na.rm = TRUE),
     .groups = "drop"
   ) %>%
   rename(team = away_team)
 
 # Combine home and away stats
-league_table <- bind_rows(home_stats, away_stats) %>%
-  group_by(team) %>%
-  summarise(
-    points = sum(points, na.rm = TRUE),
-    goal_diff = sum(goal_diff, na.rm = TRUE),
-    goals_scored = sum(goals_scored, na.rm = TRUE),
-    .groups = "drop"
+total_stats <- full_join(home_stats, away_stats, by = "team", suffix = c("_home", "_away")) %>%
+  mutate(
+    points = points_home + points_away,
+    goals_scored = goals_scored_home + goals_scored_away,
+    goals_conceded = goals_conceded_home + goals_conceded_away,
+    goal_diff = goals_scored - goals_conceded
   ) %>%
+  select(team, points, goal_diff, goals_scored)
+
+# Merge with team names
+total_stats <- total_stats %>%
   left_join(epl_teams, by = c("team" = "abbr")) %>%
-  select(team = name, points, goal_diff, goals_scored) %>%
+  select(name, points, goal_diff, goals_scored) %>%
+  rename(team = name)
+
+# Rank teams based on points, goal difference, and goals scored
+epl_league_table <- total_stats %>%
   arrange(desc(points), desc(goal_diff), desc(goals_scored)) %>%
   mutate(rank = row_number()) %>%
   select(rank, team, points, goal_diff, goals_scored)
 
-# Print the final league table
-league_table
+# Print the league table
+epl_league_table
 ```
-
 
 
 
@@ -270,7 +189,7 @@ data(morley)
 morley <- as_tibble(morley)
 
 # Convert the Expt column to a factor
-morley <- morley %>%
+morley <- morley |>
   mutate(Expt = as.factor(Expt))
 
 # Display the updated tibble
@@ -279,18 +198,107 @@ print(morley)
 
 
 ## Scatter Plot: Experiment Number versus Measured Speeds
+```{r}
+# Ensure Expt is a factor
+morley <- morley |>
+  mutate(Expt = as.factor(Expt))
+
+# Create the scatter plot using ggplot2
+scatter_plot <- morley |>
+  ggplot(aes(x = Speed, y = Expt)) +
+  geom_point(size = 3, alpha = 0.7, color = "blue") +  # Customize point size, transparency, and color
+  labs(
+    title = "Scatter Plot of Michelson's Speed-of-Light Measurements",
+    x = "Speed (km/s minus 299,000)",
+    y = "Experiment Number",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12)  # Customize axis text
+  )
+
+# Display the scatter plot
+print(scatter_plot)
+```
 
 
 ## Creating a Box Plot with One Box per Experiment
+```{r}
+# Create the box plot using ggplot2
+box_plot <- morley |>
+  ggplot(aes(x = Expt, y = Speed)) +
+  geom_boxplot(fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Customize box plot colors
+  labs(
+    title = "Box Plot of Michelson's Speed-of-Light Measurements",
+    x = "Experiment Number",
+    y = "Speed (km/s minus 299,000)",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12)  # Customize axis text
+  )
 
+# Display the box plot
+print(box_plot)
+```
 
 ## Inserting a Violin Plot into the Box Plot
+```{r}
+# Create the combined violin and box plot using ggplot2
+combined_plot <- morley |>
+  ggplot(aes(x = Expt, y = Speed)) +
+  geom_violin(fill = "lightgreen", color = "darkgreen", alpha = 0.5) +  # Add violin plot
+  geom_boxplot(width = 0.2, fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Add box plot
+  labs(
+    title = "Combined Violin and Box Plot of Michelson's Speed-of-Light Measurements",
+    x = "Experiment Number",
+    y = "Speed (km/s minus 299,000)",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12)  # Customize axis text
+  )
 
+# Display the combined plot
+print(combined_plot)
+```
 
 ## Creating a Faceted Plot Displaying Histograms
+```{r}
+# Create the faceted histogram plot using ggplot2
+faceted_histogram_plot <- morley |>
+  ggplot(aes(x = Speed)) +
+  geom_histogram(binwidth = 50, fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Add histograms
+  facet_wrap(~ Expt, ncol = 2) +  # Create facets for each experiment
+  labs(
+    title = "Faceted Histograms of Michelson's Speed-of-Light Measurements",
+    x = "Speed (km/s minus 299,000)",
+    y = "Frequency",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12),  # Customize axis text
+    strip.text = element_text(size = 12, face = "bold")  # Customize facet labels
+  )
 
+# Display the faceted histogram plot
+print(faceted_histogram_plot)
+```
 
 ## Discussion of the Plots
+The combined violin and box plot provides the most comprehensive view of the data. It not only shows the distribution shape using the violin plot but also summarizes the central tendency and spread with the box plot. It is particularly useful for identifying outliers and understanding the density of measurements within each experiment.
 
 
 
