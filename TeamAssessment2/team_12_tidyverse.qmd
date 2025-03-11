@@ -24,6 +24,7 @@ format:
 
 library(tidyverse)
 library(gt)
+library(stringr)
 ```
 
 
@@ -131,27 +132,32 @@ Each row represents a single resale transaction, and each column represents an a
 ```{r}
 resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
 head(resale_flats)
+
+filtered_data <- resale_flats |> 
+  filter(town == "ANG MO KIO") |>
+  filter(str_starts(month, "1990"))
+
+filtered_data
 ```
 
 ## Validation of Conditions C, D, and E
 > Condition C : At least 100 observations
 
 ```{r}
-nrow(resale_flats)
+nrow(filtered_data)
 ```
 > Condition D : At least 2 numeric variables
 
 ```{r}
 head(
-  resale_flats |>
+  filtered_data |>
   select(floor_area_sqm, resale_price)
 )
 ```
 > Condition E : At least one pair of identical / nearly-identical values
 
 ```{r}
-duplicates <- resale_flats |>
-  filter(town == "ANG MO KIO") |>  # Filter for Ang Mo Kio
+duplicates <- filtered_data |>  # Filter for Ang Mo Kio
   select(floor_area_sqm, resale_price) |>  # Keep relevant columns
   group_by(floor_area_sqm, resale_price) |>  
   summarise(count = n(), .groups = "drop") |>  # Count occurrences properly
