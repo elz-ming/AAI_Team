@@ -123,13 +123,44 @@ epl_league_table
 
 
 # Exercise 2: Finding and Visualizing a Real-World Data Set (30%)
-
-
 ## Explanation of the Data Set
-> Hello this is..
+> The dataset `Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv` entails Historical Resale HDB price.
+Each row represents a single resale transaction, and each column represents an aspect of the resale transaction, including `year-month`, `town`, `flat type`, `storey range`, `flat model` etc. etc.
+> The entire dataset has 200,000 rows of data between 1990 to 1999, of all locations in Singapore. For the purpose of this exercise, we are only looking at **Ang Mo Kio** HDBs in **1990**.
 
+```{r}
+resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+head(resale_flats)
+```
 
 ## Validation of Conditions C, D, and E
+> Condition C : At least 100 observations
+
+```{r}
+nrow(resale_flats)
+```
+> Condition D : At least 2 numeric variables
+
+```{r}
+head(
+  resale_flats |>
+  select(floor_area_sqm, resale_price)
+)
+```
+> Condition E : At least one pair of identical / nearly-identical values
+
+```{r}
+duplicates <- resale_flats |>
+  filter(town == "ANG MO KIO") |>  # Filter for Ang Mo Kio
+  select(floor_area_sqm, resale_price) |>  # Keep relevant columns
+  group_by(floor_area_sqm, resale_price) |>  
+  summarise(count = n(), .groups = "drop") |>  # Count occurrences properly
+  filter(count > 1) |>  # Keep only duplicates
+  arrange(desc(count))  # Sort by highest count
+
+duplicates
+```
+
 
 
 ## Generating a Scatter Plot Using `geom_point()`
