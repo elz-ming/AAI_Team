@@ -31,6 +31,13 @@ library(gt)
 
 
 ## Generating a League Table
+```{r}
+epl_results <- read_csv("epl_results.csv", show_col_types=FALSE) |>
+  as_tibble()
+
+epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
+  as_tibble()
+```
 
 
 ## Improving the Visualization Using gt Functions
