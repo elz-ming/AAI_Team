@@ -172,26 +172,16 @@ duplicates
 ## Generating a Scatter Plot Using `geom_point()`
 
 ```{r, message=FALSE, warning=FALSE}
+
 # Load necessary libraries
 library(ggplot2)
 library(dplyr)
 library(scales)
 
-# Load the dataset
-resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
-
-# Filter dataset for Ang Mo Kio town and year 1990 only
-amk_flats_1990 <- resale_flats %>%
-  filter(town == "ANG MO KIO" & grepl("^1990", month))  # Ensure correct format
-
-# Check number of rows after filtering
-num_observations <- nrow(amk_flats_1990)
-cat("Number of observations (Ang Mo Kio, 1990):", num_observations, "\n")
-
-# Generate scatter plot for Ang Mo Kio resale flats in 1990
-ggplot(amk_flats_1990, aes(x = floor_area_sqm, y = resale_price))  # ✅ Correct variable +
-  geom_point(alpha = 0.2) +  # Transparency to reduce overplotting
-  scale_y_continuous(labels = comma_format()) +  # Format y-axis numbers
+# Generate scatter plot using filtered data (Ang Mo Kio, 1990)
+ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_point() +  
+  scale_y_continuous(labels = comma_format()) +  # Format y-axis to avoid scientific notation
   labs(
     title = "Scatter Plot of Floor Area vs. Resale Price (Ang Mo Kio, 1990)",
     x = "Floor Area (sqm)",
@@ -208,30 +198,11 @@ ggplot(amk_flats_1990, aes(x = floor_area_sqm, y = resale_price))  # ✅ Correct
 ### 1. Scatter Plot with Transparency
 ```{r}
 
-ggplot(amk_flats, aes(x = floor_area_sqm, y = resale_price)) +
-  geom_point(alpha = 0.1) +  # Reduces opacity to show density
-  scale_y_continuous(labels = comma_format()) +
-  labs(
-    title = "Scatter Plot with Transparency (Ang Mo Kio)",
-    x = "Floor Area (sqm)",
-    y = "Resale Price (SGD)",
-    caption = "Data Source: Singapore Department of Statistics"
-  ) +
-  theme_minimal()
 ```
 
 ### 2. Scatter Plot with Jittering 
 ```{r}
-ggplot(amk_flats, aes(x = floor_area_sqm, y = resale_price)) +
-  geom_jitter(width = 2, height = 5000, alpha = 0.2) +  # Adds randomness to spread points
-  scale_y_continuous(labels = comma_format()) +
-  labs(
-    title = "Scatter Plot with Jittering (Ang Mo Kio)",
-    x = "Floor Area (sqm)",
-    y = "Resale Price (SGD)",
-    caption = "Data Source: Singapore Department of Statistics"
-  ) +
-  theme_minimal()
+
 ```
 
 
