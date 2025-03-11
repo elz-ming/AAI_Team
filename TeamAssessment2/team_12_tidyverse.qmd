@@ -27,7 +27,7 @@ library(gt)
 ```
 
 
-# Exercise 1: Converting Football Scores into a League Table (30%)
+# Converting Football Scores into a League Table (30%)
 
 
 ## Generating a League Table
@@ -44,7 +44,8 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
 
 
 
-# Exercise 2: Finding and Visualizing a Real-World Data Set (30%)
+
+# Finding and Visualizing a Real-World Data Set (30%)
 
 
 ## Explanation of the Data Set
@@ -54,68 +55,80 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
 
 
 ## Generating a Scatter Plot Using `geom_point()`
-```{r}
-# library(ggplot2)
-# library(dplyr)
-# 
-# resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
-# 
-# # Display the structure of the dataset
-# str(resale_flats)
-# 
-# # Check the number of observations
-# num_observations <- nrow(resale_flats)
-# cat("Number of observations:", num_observations, "\n")
-# 
-# # Scatter plot using geom_point()
-# ggplot(resale_flats, aes(x = floor_area, y = resale_price)) +
-#   geom_point() +
-#   labs(
-#     title = "Scatter Plot of Floor Area vs. Resale Price",
-#     x = "Floor Area (sqm)",
-#     y = "Resale Price (SGD)",
-#     caption = "Data Source: Singapore Department of Statistics"
-#   ) +
-#   theme_minimal()
+
+```{r, message=FALSE, warning=FALSE}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(scales)
+
+# Load the dataset
+resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+
+# Filter dataset for Ang Mo Kio town and year 1990 only
+amk_flats_1990 <- resale_flats %>%
+  filter(town == "ANG MO KIO" & grepl("^1990", month))  # Ensure correct format
+
+# Check number of rows after filtering
+num_observations <- nrow(amk_flats_1990)
+cat("Number of observations (Ang Mo Kio, 1990):", num_observations, "\n")
+
+# Generate scatter plot for Ang Mo Kio resale flats in 1990
+ggplot(amk_flats_1990, aes(x = floor_area_sqm, y = resale_price))  # ✅ Correct variable +
+  geom_point(alpha = 0.2) +  # Transparency to reduce overplotting
+  scale_y_continuous(labels = comma_format()) +  # Format y-axis numbers
+  labs(
+    title = "Scatter Plot of Floor Area vs. Resale Price (Ang Mo Kio, 1990)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
 
 ```
 
 
-
 ## Producing and Discussing Two Distinct Plots Designed to Mitigate Overplotting
+
+### 1. Scatter Plot with Transparency
+```{r}
+
+ggplot(amk_flats, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_point(alpha = 0.1) +  # Reduces opacity to show density
+  scale_y_continuous(labels = comma_format()) +
+  labs(
+    title = "Scatter Plot with Transparency (Ang Mo Kio)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
+```
+
+### 2. Scatter Plot with Jittering 
+```{r}
+ggplot(amk_flats, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_jitter(width = 2, height = 5000, alpha = 0.2) +  # Adds randomness to spread points
+  scale_y_continuous(labels = comma_format()) +
+  labs(
+    title = "Scatter Plot with Jittering (Ang Mo Kio)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
+```
+
 
 
 ## Creating Two Distinct Smoothing Interpolations
 
 
 
-# Exercise 3: Visualizing Michelson’s Speed-of-Light Measurements (25%)
-```{r}
-data(morley)
-morley <- as_tibble(morley)
-morley
-```
+# Visualizing Michelson’s Speed-of-Light Measurements (25%)
 
 
 ## Converting the `Expt` Column to a Factor
-```{r}
-# Load necessary libraries
-library(dplyr)
-library(tibble)
-
-# Load the morley dataset
-data(morley)
-
-# Convert the dataset to a tibble
-morley <- as_tibble(morley)
-
-# Convert the Expt column to a factor
-morley <- morley %>%
-  mutate(Expt = as.factor(Expt))
-
-# Display the updated tibble
-print(morley)
-```
 
 
 ## Scatter Plot: Experiment Number versus Measured Speeds
@@ -134,11 +147,4 @@ print(morley)
 
 
 
-# Exercise 4: Reflection on the Use of GenAI (10%)
-For this assessment, our team utilized ChatGPT (Generative AI) as a tool to assist with various tasks. The tool proved to be incredibly beneficial in several ways. First, it helped us brainstorm ideas for Exercise 2, where we needed to find a real-world dataset. ChatGPT suggested potential sources and criteria for selecting a suitable dataset, which saved us significant time. Additionally, it provided guidance on R syntax and tidyverse functions, especially for Exercise 1, where we had to manipulate and visualize EPL data. This was particularly helpful for debugging code and understanding how to structure the league table.
-
-One of the most significant benefits of using GenAI was its ability to explain complex concepts in simple terms. For instance, when creating visualizations in Exercise 3, ChatGPT clarified the differences between box plots, violin plots, and histograms, helping us decide which plot would be most informative. It also provided examples of how to customize plots using ggplot2, which improved the quality of our visualizations.
-
-However, there were challenges as well. While GenAI is powerful, it sometimes provided overly verbose or generic responses that required further refinement. For example, when generating R code, we often had to tweak the output to fit our specific dataset or requirements. Additionally, the tool occasionally lacked context awareness, leading to suggestions that were not entirely relevant to our tasks.
-
-Overall, our experience with GenAI was positive. It served as a valuable assistant, enhancing our productivity and understanding of the material. That said, it is essential to use it critically and not rely solely on its outputs. We believe GenAI is a powerful tool for learning and problem-solving, but it works best when combined with human judgment and creativity.
+# Reflection on the Use of GenAI (10%)
