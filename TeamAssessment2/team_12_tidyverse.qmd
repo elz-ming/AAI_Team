@@ -233,19 +233,94 @@ ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
 
 ### 1. Scatter Plot with Transparency
 ```{r}
+ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_point(alpha = 0.1) +  # Reduces opacity to show density
+  scale_y_continuous(labels = scales::comma_format()) +  
+  labs(
+    title = "Scatter Plot with Transparency (Ang Mo Kio, 1990)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
 
 ```
+#### ✅ Advantages:
+- Reveals **density regions** clearly.
+- Keeps **actual data points** visible.
+
+#### ❌ Disadvantages:
+- In **highly dense** areas, points still **overlap**.
 
 ### 2. Scatter Plot with Jittering 
 ```{r}
+ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_jitter(width = 2, height = 5000, alpha = 0.2) +  # Adds slight randomness
+  scale_y_continuous(labels = scales::comma_format()) +  
+  labs(
+    title = "Scatter Plot with Jittering (Ang Mo Kio, 1990)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
 
 ```
 
+#### ✅ Advantages:
+- **Simple and interpretable**.
+- Clearly shows **linear relationships**.
+
+#### ❌ Disadvantages:
+- **Cannot capture non-linear trends** in the data.
 
 
 ## Creating Two Distinct Smoothing Interpolations
 
+### 1. Linear Regression Smoothing
+```{r}
+ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_point(alpha = 0.1) +  
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +  # Linear trend line
+  scale_y_continuous(labels = scales::comma_format()) +  
+  labs(
+    title = "Linear Regression Smoothing (Ang Mo Kio, 1990)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
 
+```
+
+#### ✅ Advantages:
+- **Simple and interpretable**.
+- Clearly shows **linear relationships**.
+
+#### ❌ Disadvantages:
+- **Cannot capture non-linear trends** in the data.
+
+### 2. LOESS (Locally Estimated ScatterPlot Smoothing)
+```{r}
+ggplot(filtered_data, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_point(alpha = 0.1) +  
+  geom_smooth(method = "loess", se = FALSE, color = "red") +  # LOESS smoothing
+  scale_y_continuous(labels = scales::comma_format()) +  
+  labs(
+    title = "LOESS Smoothing (Ang Mo Kio, 1990)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
+
+```
+
+#### ✅ Advantages:
+- Captures **non-linear relationships** better than linear regression.
+
+#### ❌ Disadvantages:
+- **Sensitive to outliers** and **computationally expensive** for large datasets.
 
 # Visualizing Michelson’s Speed-of-Light Measurements (25%)
 
@@ -280,7 +355,7 @@ morley <- morley |>
 # Create the scatter plot using ggplot2
 scatter_plot <- morley |>
   ggplot(aes(x = Speed, y = Expt)) +
-  geom_point(size = 3, alpha = 0.7, color = "blue") +  # Customize point size, transparency, and color
+  geom_point(size = 3, color = "blue") +  # Customize point size, transparency, and color
   labs(
     title = "Scatter Plot of Michelson's Speed-of-Light Measurements",
     x = "Speed (km/s minus 299,000)",
@@ -304,7 +379,7 @@ print(scatter_plot)
 # Create the box plot using ggplot2
 box_plot <- morley |>
   ggplot(aes(x = Expt, y = Speed)) +
-  geom_boxplot(fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Customize box plot colors
+  geom_boxplot(fill = "lightblue", color = "darkblue") +  # Customize box plot colors
   labs(
     title = "Box Plot of Michelson's Speed-of-Light Measurements",
     x = "Experiment Number",
