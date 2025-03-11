@@ -24,6 +24,9 @@ format:
 
 library(tidyverse)
 library(gt)
+library(dplyr)
+library(tidyr)
+library(readr)
 library(stringr)
 ```
 
@@ -33,20 +36,6 @@ library(stringr)
 
 ## Generating a League Table
 ```{r}
-epl_results <- read_csv("epl_results.csv", show_col_types=FALSE) |>
-  as_tibble()
-
-epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
-  as_tibble()
-```
-
-
-```{r}
-library(dplyr)
-library(tidyr)
-library(readr)
-
-# Read CSV files
 epl_results <- read_csv("epl_results.csv", show_col_types = FALSE)
 epl_teams <- read_csv("epl_teams.csv", show_col_types = FALSE)
 
@@ -117,9 +106,56 @@ epl_league_table <- total_stats %>%
 epl_league_table
 ```
 
-
-
 ## Improving the Visualization Using gt Functions
+```{r}
+# Create a nicely formatted table using gt
+epl_league_table %>%
+  gt() %>%
+  tab_header(
+    title = md("**EPL League Table**"),
+    subtitle = "Rankings based on points, goal difference, and goals scored"
+  ) %>%
+  cols_label(
+    rank = "Rank",
+    team = "Team",
+    points = "Points",
+    goal_diff = "Goal Difference",
+    goals_scored = "Goals Scored"
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(everything())
+  ) %>%
+  tab_options(
+    table.font.size = px(14),
+    table.width = pct(100),
+    row.striping.include_table_body = TRUE,
+    row.striping.background_color = "#f2f2f2"
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "#A3E4D7"),
+    locations = cells_body(rows = rank <= 4)
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "#F5B7B1"),
+    locations = cells_body(rows = rank >= 18)
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(rows = rank == 1, columns = team)
+  ) %>%
+  tab_footnote(
+    footnote = "Top 4 qualified for the Champions League group stage",
+    locations = cells_column_labels(columns = rank)
+  ) %>%
+  tab_footnote(
+    footnote = "Bottom 3 relegated to EFL Championship",
+    locations = cells_column_labels(columns = rank)
+  ) %>%
+  tab_source_note(
+    source_note = md("Source: [Wikipedia](https://en.wikipedia.org/wiki/2019%E2%80%9320_Premier_League#League_table)")
+  )
+```
 
 
 
