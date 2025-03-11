@@ -44,6 +44,7 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
 
 
 
+
 # Finding and Visualizing a Real-World Data Set (30%)
 
 
@@ -54,6 +55,32 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
 
 
 ## Generating a Scatter Plot Using `geom_point()`
+```{r}
+# library(ggplot2)
+# library(dplyr)
+# 
+# resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+# 
+# # Display the structure of the dataset
+# str(resale_flats)
+# 
+# # Check the number of observations
+# num_observations <- nrow(resale_flats)
+# cat("Number of observations:", num_observations, "\n")
+# 
+# # Scatter plot using geom_point()
+# ggplot(resale_flats, aes(x = floor_area, y = resale_price)) +
+#   geom_point() +
+#   labs(
+#     title = "Scatter Plot of Floor Area vs. Resale Price",
+#     x = "Floor Area (sqm)",
+#     y = "Resale Price (SGD)",
+#     caption = "Data Source: Singapore Department of Statistics"
+#   ) +
+#   theme_minimal()
+
+```
+
 
 
 ## Producing and Discussing Two Distinct Plots Designed to Mitigate Overplotting
