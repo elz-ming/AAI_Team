@@ -188,7 +188,7 @@ data(morley)
 morley <- as_tibble(morley)
 
 # Convert the Expt column to a factor
-morley <- morley %>%
+morley <- morley |>
   mutate(Expt = as.factor(Expt))
 
 # Display the updated tibble
@@ -197,18 +197,107 @@ print(morley)
 
 
 ## Scatter Plot: Experiment Number versus Measured Speeds
+```{r}
+# Ensure Expt is a factor
+morley <- morley |>
+  mutate(Expt = as.factor(Expt))
+
+# Create the scatter plot using ggplot2
+scatter_plot <- morley |>
+  ggplot(aes(x = Speed, y = Expt)) +
+  geom_point(size = 3, alpha = 0.7, color = "blue") +  # Customize point size, transparency, and color
+  labs(
+    title = "Scatter Plot of Michelson's Speed-of-Light Measurements",
+    x = "Speed (km/s minus 299,000)",
+    y = "Experiment Number",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12)  # Customize axis text
+  )
+
+# Display the scatter plot
+print(scatter_plot)
+```
 
 
 ## Creating a Box Plot with One Box per Experiment
+```{r}
+# Create the box plot using ggplot2
+box_plot <- morley |>
+  ggplot(aes(x = Expt, y = Speed)) +
+  geom_boxplot(fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Customize box plot colors
+  labs(
+    title = "Box Plot of Michelson's Speed-of-Light Measurements",
+    x = "Experiment Number",
+    y = "Speed (km/s minus 299,000)",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12)  # Customize axis text
+  )
 
+# Display the box plot
+print(box_plot)
+```
 
 ## Inserting a Violin Plot into the Box Plot
+```{r}
+# Create the combined violin and box plot using ggplot2
+combined_plot <- morley |>
+  ggplot(aes(x = Expt, y = Speed)) +
+  geom_violin(fill = "lightgreen", color = "darkgreen", alpha = 0.5) +  # Add violin plot
+  geom_boxplot(width = 0.2, fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Add box plot
+  labs(
+    title = "Combined Violin and Box Plot of Michelson's Speed-of-Light Measurements",
+    x = "Experiment Number",
+    y = "Speed (km/s minus 299,000)",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12)  # Customize axis text
+  )
 
+# Display the combined plot
+print(combined_plot)
+```
 
 ## Creating a Faceted Plot Displaying Histograms
+```{r}
+# Create the faceted histogram plot using ggplot2
+faceted_histogram_plot <- morley |>
+  ggplot(aes(x = Speed)) +
+  geom_histogram(binwidth = 50, fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Add histograms
+  facet_wrap(~ Expt, ncol = 2) +  # Create facets for each experiment
+  labs(
+    title = "Faceted Histograms of Michelson's Speed-of-Light Measurements",
+    x = "Speed (km/s minus 299,000)",
+    y = "Frequency",
+    caption = "Source: R dataset `morley`"
+  ) +
+  theme_minimal() +  # Use a minimal theme for a clean look
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Customize title
+    axis.title = element_text(size = 14),  # Customize axis titles
+    axis.text = element_text(size = 12),  # Customize axis text
+    strip.text = element_text(size = 12, face = "bold")  # Customize facet labels
+  )
 
+# Display the faceted histogram plot
+print(faceted_histogram_plot)
+```
 
 ## Discussion of the Plots
+The combined violin and box plot provides the most comprehensive view of the data. It not only shows the distribution shape using the violin plot but also summarizes the central tendency and spread with the box plot. It is particularly useful for identifying outliers and understanding the density of measurements within each experiment.
 
 
 
