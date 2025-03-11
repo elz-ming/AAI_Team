@@ -173,7 +173,7 @@ filtered_data <- resale_flats |>
   filter(town == "ANG MO KIO") |>
   filter(str_starts(month, "1990"))
 
-filtered_data
+head(filtered_data)
 ```
 
 ## Validation of Conditions C, D, and E
@@ -405,7 +405,7 @@ combined_plot <- morley |>
   geom_violin(fill = "lightgreen", color = "darkgreen", alpha = 0.5) +  # Add violin plot
   geom_boxplot(width = 0.2, fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Add box plot
   labs(
-    title = "Combined Violin and Box Plot of Michelson's Speed-of-Light Measurements",
+    title = "Combined Violin and Box Plot \nof Michelson's Speed-of-Light Measurements",
     x = "Experiment Number",
     y = "Speed (km/s minus 299,000)",
     caption = "Source: R dataset `morley`"
@@ -429,7 +429,7 @@ faceted_histogram_plot <- morley |>
   geom_histogram(binwidth = 50, fill = "lightblue", color = "darkblue", alpha = 0.7) +  # Add histograms
   facet_wrap(~ Expt, ncol = 2) +  # Create facets for each experiment
   labs(
-    title = "Faceted Histograms of Michelson's Speed-of-Light Measurements",
+    title = "Faceted Histograms of \nMichelson's Speed-of-Light Measurements",
     x = "Speed (km/s minus 299,000)",
     y = "Frequency",
     caption = "Source: R dataset `morley`"
