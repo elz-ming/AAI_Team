@@ -305,7 +305,7 @@ The combined violin and box plot provides the most comprehensive view of the dat
 # Exercise 4: Reflection on the Use of GenAI (10%)
 For this assessment, our team used DeepSeek and ChatGPT to assist with various tasks. These tools helped speed up our work and provided useful insights, especially for debugging R code and understanding statistical methods. We also used GitHub for collaboration, which made teamwork and version control more efficient.
 
-The main benefit of GenAI was its ability to save us time. Tasks like writing and debugging code were completed faster, and the tools offered clear explanations for unfamiliar concepts, such as ggplot2 and tidyverse syntax. This made it easier to learn while working.
+The main benefit of GenAI was its ability to save us the time and effort used for recalling code syntax. Tasks like writing and debugging code were completed faster, and the tools offered clear explanations for unfamiliar concepts, such as ggplot2 and tidyverse syntax. This made it easier to learn while working.
 
 However, there were some challenges. The tools occasionally provided generic solutions that needed adjustments to fit our specific needs. They also sometimes lacked domain-specific depth, requiring us to refine their outputs.
 
