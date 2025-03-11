@@ -27,7 +27,7 @@ library(gt)
 ```
 
 
-# Converting Football Scores into a League Table (30%)
+# Exercise 1: Converting Football Scores into a League Table (30%)
 
 
 ## Generating a League Table
@@ -203,7 +203,7 @@ league_table
 
 
 
-# Finding and Visualizing a Real-World Data Set (30%)
+# Exercise 2: Finding and Visualizing a Real-World Data Set (30%)
 
 
 ## Explanation of the Data Set
@@ -213,6 +213,32 @@ league_table
 
 
 ## Generating a Scatter Plot Using `geom_point()`
+```{r}
+# library(ggplot2)
+# library(dplyr)
+# 
+# resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+# 
+# # Display the structure of the dataset
+# str(resale_flats)
+# 
+# # Check the number of observations
+# num_observations <- nrow(resale_flats)
+# cat("Number of observations:", num_observations, "\n")
+# 
+# # Scatter plot using geom_point()
+# ggplot(resale_flats, aes(x = floor_area, y = resale_price)) +
+#   geom_point() +
+#   labs(
+#     title = "Scatter Plot of Floor Area vs. Resale Price",
+#     x = "Floor Area (sqm)",
+#     y = "Resale Price (SGD)",
+#     caption = "Data Source: Singapore Department of Statistics"
+#   ) +
+#   theme_minimal()
+
+```
+
 
 
 ## Producing and Discussing Two Distinct Plots Designed to Mitigate Overplotting
@@ -222,10 +248,33 @@ league_table
 
 
 
-# Visualizing Michelson’s Speed-of-Light Measurements (25%)
+# Exercise 3: Visualizing Michelson’s Speed-of-Light Measurements (25%)
+```{r}
+data(morley)
+morley <- as_tibble(morley)
+morley
+```
 
 
 ## Converting the `Expt` Column to a Factor
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(tibble)
+
+# Load the morley dataset
+data(morley)
+
+# Convert the dataset to a tibble
+morley <- as_tibble(morley)
+
+# Convert the Expt column to a factor
+morley <- morley %>%
+  mutate(Expt = as.factor(Expt))
+
+# Display the updated tibble
+print(morley)
+```
 
 
 ## Scatter Plot: Experiment Number versus Measured Speeds
@@ -244,4 +293,11 @@ league_table
 
 
 
-# Reflection on the Use of GenAI (10%)
+# Exercise 4: Reflection on the Use of GenAI (10%)
+For this assessment, our team utilized ChatGPT (Generative AI) as a tool to assist with various tasks. The tool proved to be incredibly beneficial in several ways. First, it helped us brainstorm ideas for Exercise 2, where we needed to find a real-world dataset. ChatGPT suggested potential sources and criteria for selecting a suitable dataset, which saved us significant time. Additionally, it provided guidance on R syntax and tidyverse functions, especially for Exercise 1, where we had to manipulate and visualize EPL data. This was particularly helpful for debugging code and understanding how to structure the league table.
+
+One of the most significant benefits of using GenAI was its ability to explain complex concepts in simple terms. For instance, when creating visualizations in Exercise 3, ChatGPT clarified the differences between box plots, violin plots, and histograms, helping us decide which plot would be most informative. It also provided examples of how to customize plots using ggplot2, which improved the quality of our visualizations.
+
+However, there were challenges as well. While GenAI is powerful, it sometimes provided overly verbose or generic responses that required further refinement. For example, when generating R code, we often had to tweak the output to fit our specific dataset or requirements. Additionally, the tool occasionally lacked context awareness, leading to suggestions that were not entirely relevant to our tasks.
+
+Overall, our experience with GenAI was positive. It served as a valuable assistant, enhancing our productivity and understanding of the material. That said, it is essential to use it critically and not rely solely on its outputs. We believe GenAI is a powerful tool for learning and problem-solving, but it works best when combined with human judgment and creativity.
