@@ -1,0 +1,143 @@
+---
+title: "Singapore Ridership Analysis, by Team 12"
+author: 
+  - "Chua Zong Han Lionel"
+  - "Lin Zhenming"
+  - "Nurul Shaidah Binti Mohamed Shaib"
+  - "Poh Weh Lin"
+  - "Tamo Cholo Rafael Tandoc"
+  
+date: 2025-03-11
+date-format: "dddd MMM DD, YYYY"
+
+format: 
+  html:
+    embed-resources: true
+    number-sections: false
+    toc: true
+    toc-depth: 2
+---
+
+# Step 0 : Setting up
+## 0.1 : Importing Libraries
+```{r}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(readxl)
+library(tidyquant)
+library(ggplot2)
+
+# TODO 1a: Write a function to display data tables beautifully
+```
+
+## 0.2 : Importing Data
+### Dataset 1 : Monthly Data
+This dataset entails monthly ridership for every month of the year, for 5 years (2019 to 2024)
+```{r}
+#| eval: true
+#| echo: true
+
+monthly_data <- read_csv("Data/monthly_ave_daily_pt_ridership.csv", show_col_types=FALSE) |>
+  as_tibble()
+print(monthly_data, n=10)
+# TODO 1b: Use the function in 1a to display the monthly data beautifully
+```
+
+
+### Dataset 2 : Yearly Data
+This dataset entails yearly ridership for for 33 years (1990 to 2023)
+```{r}
+#| eval: true
+#| echo: true
+
+yearly_data <- read_csv("Data/PublicTransportOperationAndRidershipAnnual.csv", show_col_types=FALSE) |>
+  as_tibble()
+print(yearly_data, n=10)
+# TODO 1c: Use the function in 1a to display the yearly data beautifully
+```
+
+# Step 1 : Data Cleaning and Engineering
+
+## Cleaning Monthly Data
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 2a: Clean the monthly data, and display them
+```
+
+## Cleaning Yearly Data
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 2b: Clean the yearly data, and display them
+```
+
+## Joining Data
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 2c: Join both tables after cleaning
+```
+
+
+
+# Step 2 : Generate the Improved Visualization
+## 1.1 Old Visualization
+::: {#fig1 style="text-align: center;"}
+![Figure 1: Original Visualization from the Straits Times (2025)](Data/figure_1.jpg){width=70%}
+:::
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 3a: Replace the image with .png file and change the display code to use .png file
+```
+
+## 2.2 Improved Visualization
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 3b: Create the Sparkline visualization
+```
+
+# Step 3 : Data Analysis
+## 3.1 Monthly Ridership Analysis
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 4: Data analysis using monhtly data
+```
+
+## 3.2 Infrastructure Expansion Correlation
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 5: Data analysis using yearly data
+```
+
+## 3.3 Impact of Alternative Transport Modes
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 6: Data analysis using yearly data
+```
+
+## 3.4 Time Series Analysis
+```{r}
+#| eval: true
+#| echo: true
+
+# TODO 7: Data analysis using monthly data
+```
+
