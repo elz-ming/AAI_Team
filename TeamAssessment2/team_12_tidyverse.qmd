@@ -27,10 +27,11 @@ library(gt)
 library(dplyr)
 library(tidyr)
 library(readr)
+library(stringr)
 ```
 
 
-# Exercise 1: Converting Football Scores into a League Table (30%)
+# Converting Football Scores into a League Table (30%)
 
 
 ## Generating a League Table
@@ -159,56 +160,123 @@ epl_league_table %>%
 
 
 # Exercise 2: Finding and Visualizing a Real-World Data Set (30%)
-
-
 ## Explanation of the Data Set
+> The dataset `Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv` entails Historical Resale HDB price.
+Each row represents a single resale transaction, and each column represents an aspect of the resale transaction, including `year-month`, `town`, `flat type`, `storey range`, `flat model` etc. etc.
+> The entire dataset has 200,000 rows of data between 1990 to 1999, of all locations in Singapore. For the purpose of this exercise, we are only looking at **Ang Mo Kio** HDBs in **1990**.
 
+```{r}
+resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+head(resale_flats)
+
+filtered_data <- resale_flats |> 
+  filter(town == "ANG MO KIO") |>
+  filter(str_starts(month, "1990"))
+
+filtered_data
+```
 
 ## Validation of Conditions C, D, and E
+> Condition C : At least 100 observations
 
-
-## Generating a Scatter Plot Using `geom_point()`
 ```{r}
-# library(ggplot2)
-# library(dplyr)
-# 
-# resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
-# 
-# # Display the structure of the dataset
-# str(resale_flats)
-# 
-# # Check the number of observations
-# num_observations <- nrow(resale_flats)
-# cat("Number of observations:", num_observations, "\n")
-# 
-# # Scatter plot using geom_point()
-# ggplot(resale_flats, aes(x = floor_area, y = resale_price)) +
-#   geom_point() +
-#   labs(
-#     title = "Scatter Plot of Floor Area vs. Resale Price",
-#     x = "Floor Area (sqm)",
-#     y = "Resale Price (SGD)",
-#     caption = "Data Source: Singapore Department of Statistics"
-#   ) +
-#   theme_minimal()
+nrow(filtered_data)
+```
+> Condition D : At least 2 numeric variables
 
+```{r}
+head(
+  filtered_data |>
+  select(floor_area_sqm, resale_price)
+)
+```
+> Condition E : At least one pair of identical / nearly-identical values
+
+```{r}
+duplicates <- filtered_data |>  # Filter for Ang Mo Kio
+  select(floor_area_sqm, resale_price) |>  # Keep relevant columns
+  group_by(floor_area_sqm, resale_price) |>  
+  summarise(count = n(), .groups = "drop") |>  # Count occurrences properly
+  filter(count > 1) |>  # Keep only duplicates
+  arrange(desc(count))  # Sort by highest count
+
+duplicates
 ```
 
 
 
+## Generating a Scatter Plot Using `geom_point()`
+
+```{r, message=FALSE, warning=FALSE}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(scales)
+
+# Load the dataset
+resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+
+# Filter dataset for Ang Mo Kio town and year 1990 only
+amk_flats_1990 <- resale_flats %>%
+  filter(town == "ANG MO KIO" & grepl("^1990", month))  # Ensure correct format
+
+# Check number of rows after filtering
+num_observations <- nrow(amk_flats_1990)
+cat("Number of observations (Ang Mo Kio, 1990):", num_observations, "\n")
+
+# Generate scatter plot for Ang Mo Kio resale flats in 1990
+ggplot(amk_flats_1990, aes(x = floor_area_sqm, y = resale_price))  # ✅ Correct variable +
+  geom_point(alpha = 0.2) +  # Transparency to reduce overplotting
+  scale_y_continuous(labels = comma_format()) +  # Format y-axis numbers
+  labs(
+    title = "Scatter Plot of Floor Area vs. Resale Price (Ang Mo Kio, 1990)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
+
+```
+
+
 ## Producing and Discussing Two Distinct Plots Designed to Mitigate Overplotting
+
+### 1. Scatter Plot with Transparency
+```{r}
+
+ggplot(amk_flats, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_point(alpha = 0.1) +  # Reduces opacity to show density
+  scale_y_continuous(labels = comma_format()) +
+  labs(
+    title = "Scatter Plot with Transparency (Ang Mo Kio)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
+```
+
+### 2. Scatter Plot with Jittering 
+```{r}
+ggplot(amk_flats, aes(x = floor_area_sqm, y = resale_price)) +
+  geom_jitter(width = 2, height = 5000, alpha = 0.2) +  # Adds randomness to spread points
+  scale_y_continuous(labels = comma_format()) +
+  labs(
+    title = "Scatter Plot with Jittering (Ang Mo Kio)",
+    x = "Floor Area (sqm)",
+    y = "Resale Price (SGD)",
+    caption = "Data Source: Singapore Department of Statistics"
+  ) +
+  theme_minimal()
+```
+
 
 
 ## Creating Two Distinct Smoothing Interpolations
 
 
 
-# Exercise 3: Visualizing Michelson’s Speed-of-Light Measurements (25%)
-```{r}
-data(morley)
-morley <- as_tibble(morley)
-morley
-```
+# Visualizing Michelson’s Speed-of-Light Measurements (25%)
 
 
 ## Converting the `Expt` Column to a Factor
@@ -338,10 +406,10 @@ The combined violin and box plot provides the most comprehensive view of the dat
 
 
 # Exercise 4: Reflection on the Use of GenAI (10%)
-For this assessment, our team utilized ChatGPT (Generative AI) as a tool to assist with various tasks. The tool proved to be incredibly beneficial in several ways. First, it helped us brainstorm ideas for Exercise 2, where we needed to find a real-world dataset. ChatGPT suggested potential sources and criteria for selecting a suitable dataset, which saved us significant time. Additionally, it provided guidance on R syntax and tidyverse functions, especially for Exercise 1, where we had to manipulate and visualize EPL data. This was particularly helpful for debugging code and understanding how to structure the league table.
+For this assessment, our team used DeepSeek and ChatGPT to assist with various tasks. These tools helped speed up our work and provided useful insights, especially for debugging R code and understanding statistical methods. We also used GitHub for collaboration, which made teamwork and version control more efficient.
 
-One of the most significant benefits of using GenAI was its ability to explain complex concepts in simple terms. For instance, when creating visualizations in Exercise 3, ChatGPT clarified the differences between box plots, violin plots, and histograms, helping us decide which plot would be most informative. It also provided examples of how to customize plots using ggplot2, which improved the quality of our visualizations.
+The main benefit of GenAI was its ability to save us the time and effort used for recalling code syntax. Tasks like writing and debugging code were completed faster, and the tools offered clear explanations for unfamiliar concepts, such as ggplot2 and tidyverse syntax. This made it easier to learn while working.
 
-However, there were challenges as well. While GenAI is powerful, it sometimes provided overly verbose or generic responses that required further refinement. For example, when generating R code, we often had to tweak the output to fit our specific dataset or requirements. Additionally, the tool occasionally lacked context awareness, leading to suggestions that were not entirely relevant to our tasks.
+However, there were some challenges. The tools occasionally provided generic solutions that needed adjustments to fit our specific needs. They also sometimes lacked domain-specific depth, requiring us to refine their outputs.
 
-Overall, our experience with GenAI was positive. It served as a valuable assistant, enhancing our productivity and understanding of the material. That said, it is essential to use it critically and not rely solely on its outputs. We believe GenAI is a powerful tool for learning and problem-solving, but it works best when combined with human judgment and creativity.
+Overall, GenAI was a helpful resource. It allowed us to focus on higher-level problem-solving, but it worked best when combined with human judgment.
