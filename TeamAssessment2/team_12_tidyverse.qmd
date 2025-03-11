@@ -303,10 +303,10 @@ The combined violin and box plot provides the most comprehensive view of the dat
 
 
 # Exercise 4: Reflection on the Use of GenAI (10%)
-For this assessment, our team utilized ChatGPT (Generative AI) as a tool to assist with various tasks. The tool proved to be incredibly beneficial in several ways. First, it helped us brainstorm ideas for Exercise 2, where we needed to find a real-world dataset. ChatGPT suggested potential sources and criteria for selecting a suitable dataset, which saved us significant time. Additionally, it provided guidance on R syntax and tidyverse functions, especially for Exercise 1, where we had to manipulate and visualize EPL data. This was particularly helpful for debugging code and understanding how to structure the league table.
+For this assessment, our team used DeepSeek and ChatGPT to assist with various tasks. These tools helped speed up our work and provided useful insights, especially for debugging R code and understanding statistical methods. We also used GitHub for collaboration, which made teamwork and version control more efficient.
 
-One of the most significant benefits of using GenAI was its ability to explain complex concepts in simple terms. For instance, when creating visualizations in Exercise 3, ChatGPT clarified the differences between box plots, violin plots, and histograms, helping us decide which plot would be most informative. It also provided examples of how to customize plots using ggplot2, which improved the quality of our visualizations.
+The main benefit of GenAI was its ability to save us time. Tasks like writing and debugging code were completed faster, and the tools offered clear explanations for unfamiliar concepts, such as ggplot2 and tidyverse syntax. This made it easier to learn while working.
 
-However, there were challenges as well. While GenAI is powerful, it sometimes provided overly verbose or generic responses that required further refinement. For example, when generating R code, we often had to tweak the output to fit our specific dataset or requirements. Additionally, the tool occasionally lacked context awareness, leading to suggestions that were not entirely relevant to our tasks.
+However, there were some challenges. The tools occasionally provided generic solutions that needed adjustments to fit our specific needs. They also sometimes lacked domain-specific depth, requiring us to refine their outputs.
 
-Overall, our experience with GenAI was positive. It served as a valuable assistant, enhancing our productivity and understanding of the material. That said, it is essential to use it critically and not rely solely on its outputs. We believe GenAI is a powerful tool for learning and problem-solving, but it works best when combined with human judgment and creativity.
+Overall, GenAI was a helpful resource. It allowed us to focus on higher-level problem-solving, but it worked best when combined with human judgment.
