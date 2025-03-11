@@ -39,6 +39,165 @@ epl_teams <- read_csv("epl_teams.csv", show_col_types=FALSE) |>
   as_tibble()
 ```
 
+```{r}
+library(tidyverse)
+
+# Load Data
+epl_results <- read_csv("epl_results.csv", show_col_types = FALSE)
+epl_teams <- read_csv("epl_teams.csv", show_col_types = FALSE)
+
+# Convert match results to separate columns for home and away goals
+epl_results_long <- epl_results %>%
+  pivot_longer(-home_team, names_to = "away_team", values_to = "score") %>%
+  separate(score, into = c("home_goals", "away_goals"), sep = "-", convert = TRUE)
+
+# Compute match points and statistics
+match_results <- epl_results_long %>%
+  mutate(
+    home_points = case_when(
+      home_goals > away_goals ~ 3,
+      home_goals == away_goals ~ 1,
+      TRUE ~ 0
+    ),
+    away_points = case_when(
+      home_goals < away_goals ~ 3,
+      home_goals == away_goals ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+# Compute cumulative stats for each team
+home_stats <- match_results %>%
+  group_by(home_team) %>%
+  summarise(
+    points = sum(home_points),
+    goals_scored = sum(home_goals)
+  )
+
+away_stats <- match_results %>%
+  group_by(away_team) %>%
+  summarise(
+    points = sum(away_points),
+    goals_scored = sum(away_goals)
+  )
+
+# Merge home and away stats
+total_stats <- full_join(
+  home_stats %>% rename(team = home_team),
+  away_stats %>% rename(team = away_team),
+  by = "team", suffix = c("_home", "_away")
+) %>%
+  mutate(
+    points = points_home + points_away,
+    goals_scored = goals_scored_home + goals_scored_away
+  ) %>%
+  select(team, points, goals_scored)
+
+# Compute goal difference
+total_stats <- match_results %>%
+  group_by(home_team) %>%
+  summarise(goals_conceded_home = sum(away_goals)) %>%
+  full_join(
+    match_results %>%
+      group_by(away_team) %>%
+      summarise(goals_conceded_away = sum(home_goals)),
+    by = c("home_team" = "away_team")
+  ) %>%
+  rename(team = home_team) %>%
+  mutate(
+    goals_conceded = coalesce(goals_conceded_home, 0) + coalesce(goals_conceded_away, 0)
+  ) %>%
+  right_join(total_stats, by = "team") %>%
+  mutate(goal_diff = goals_scored - goals_conceded) %>%
+  select(team, points, goal_diff, goals_scored)
+
+# Rank teams based on points, goal difference, and goals scored
+epl_league_table <- total_stats %>%
+  arrange(desc(points), desc(goal_diff), desc(goals_scored)) %>%
+  mutate(rank = row_number())
+
+# Print the league table
+epl_league_table
+
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(readr)
+library(purrr)
+
+# Read CSV files
+epl_results <- read_csv("epl_results.csv", show_col_types = FALSE)
+epl_teams <- read_csv("epl_teams.csv", show_col_types = FALSE)
+
+# Function to extract match details safely
+calculate_points <- function(home_goals, away_goals) {
+  if (is.na(home_goals) || is.na(away_goals)) return(NA)  # Handle missing values
+  if (home_goals > away_goals) return(3)  # Home win
+  if (home_goals < away_goals) return(0)  # Home loss
+  return(1)  # Draw
+}
+
+# Convert wide format to long format, removing missing values
+results_long <- epl_results %>%
+  pivot_longer(cols = -home_team, names_to = "away_team", values_to = "score") %>%
+  drop_na(score) %>%  # Remove rows where score is missing
+  separate(score, into = c("home_goals", "away_goals"), sep = "-", convert = TRUE)
+
+# Home team statistics
+home_stats <- results_long %>%
+  mutate(
+    points = map2_int(home_goals, away_goals, ~ ifelse(is.na(.x) | is.na(.y), 0, calculate_points(.x, .y))),
+    goal_diff = home_goals - away_goals,
+    goals_scored = home_goals
+  ) %>%
+  group_by(home_team) %>%
+  summarise(
+    points = sum(points, na.rm = TRUE),
+    goal_diff = sum(goal_diff, na.rm = TRUE),
+    goals_scored = sum(goals_scored, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  rename(team = home_team)
+
+# Away team statistics
+away_stats <- results_long %>%
+  mutate(
+    points = map2_int(away_goals, home_goals, ~ ifelse(is.na(.x) | is.na(.y), 0, calculate_points(.y, .x))),  # Reverse order
+    goal_diff = away_goals - home_goals,
+    goals_scored = away_goals
+  ) %>%
+  group_by(away_team) %>%
+  summarise(
+    points = sum(points, na.rm = TRUE),
+    goal_diff = sum(goal_diff, na.rm = TRUE),
+    goals_scored = sum(goals_scored, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  rename(team = away_team)
+
+# Combine home and away stats
+league_table <- bind_rows(home_stats, away_stats) %>%
+  group_by(team) %>%
+  summarise(
+    points = sum(points, na.rm = TRUE),
+    goal_diff = sum(goal_diff, na.rm = TRUE),
+    goals_scored = sum(goals_scored, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  left_join(epl_teams, by = c("team" = "abbr")) %>%
+  select(team = name, points, goal_diff, goals_scored) %>%
+  arrange(desc(points), desc(goal_diff), desc(goals_scored)) %>%
+  mutate(rank = row_number()) %>%
+  select(rank, team, points, goal_diff, goals_scored)
+
+# Print the final league table
+league_table
+```
+
+
+
 
 ## Improving the Visualization Using gt Functions
 
