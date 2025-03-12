@@ -27,6 +27,7 @@ format:
 #| warning: false
 
 library(tidyverse)
+library(knitr)
 library(readxl)
 library(tidyquant)
 library(ggplot2)
@@ -63,21 +64,70 @@ print(yearly_data, n=10)
 # Step 1 : Data Cleaning and Engineering
 
 ## Cleaning Monthly Data
+
+- **Splitting "month" Column into Separate "Month" and "Year" Columns**
+  - The **"month"** column contains combined **month-year** values (e.g., `Jan-19`).
+  - This step **separates** the **month** and **year** into two distinct columns to facilitate time-based analysis.
+
 ```{r}
 #| eval: true
 #| echo: true
 
 # TODO 2a: Clean the monthly data, and display them
+monthly_data <- monthly_data %>%
+  separate(month, into = c("month", "year"), sep = "-", convert = TRUE)
+kable(head(monthly_data))
 ```
 
 ## Cleaning Yearly Data
+- **Transpose Table for Better Readability and Analysis**
+  - Convert dataset from **wide** to **long** format.
+  - Extract the **first row as column names** and remove it.
+  - Convert **Year column** to numeric.
 ```{r}
 #| eval: true
 #| echo: true
 
 # TODO 2b: Clean the yearly data, and display them
+yearly_data <- t(yearly_data)
+yearly_data <- as.data.frame(yearly_data)
+colnames(yearly_data) <- yearly_data[1, ]
+yearly_data <- yearly_data[-1, ]
+yearly_data$Year <- as.numeric(rownames(yearly_data))
 ```
+- **Filter Data from 2018 Onwards and Reorganize Columns**
+  - Remove records before **2018** to deal with missing data.
+  - Reset row names and relocate **Year column** to the first position.
+```{r}
+#| eval: true
+#| echo: true
 
+yearly_data <- yearly_data[yearly_data$Year >= 2018, ]
+rownames(yearly_data) <- NULL
+yearly_data <- yearly_data %>% relocate(Year, .before = everything())
+yearly_data <- yearly_data %>% rename(`Average Daily Trip - P2P` = `Average Daily Trip - Point-To-Point (P2P) Transport (Taxis And Private Hire Cars)`)
+```
+- **Convert Ridership Data and MRT/LRT km Operated Data from Thousands to Actual Values**
+  - Multiply relevant columns by **1000**.
+```{r}
+#| eval: true
+#| echo: true
+
+# Identify columns to multiply by 1000
+columns_to_multiply <- c("MRT km Operated", 
+                         "LRT km Operated",
+                         "Average Daily Ridership - MRT", 
+                         "Average Daily Ridership - LRT", 
+                         "Average Daily Ridership - Public Bus", 
+                         "Average Daily Trip - P2P")
+
+# Convert these columns to numeric and multiply by 1000
+for (col in columns_to_multiply) {
+  yearly_data[[col]] <- as.numeric(yearly_data[[col]]) * 1000
+}
+
+kable(head(yearly_data))
+```
 ## Joining Data
 ```{r}
 #| eval: true

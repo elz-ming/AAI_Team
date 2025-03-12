@@ -167,7 +167,7 @@ Each row represents a single resale transaction, and each column represents an a
 > The entire dataset has 200,000 rows of data between 1990 to 1999, of all locations in Singapore. For the purpose of this exercise, we are only looking at **Ang Mo Kio** HDBs in **1990**.
 
 ```{r}
-resale_flats <- read.csv("ResaleFlatPrices/Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
+resale_flats <- read.csv("Resale Flat Prices (Based on Approval Date), 1990 - 1999.csv")
 head(resale_flats)
 
 filtered_data <- resale_flats |> 
