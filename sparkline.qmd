@@ -87,6 +87,238 @@ df_final <- df %>%
 # Display the table
 knitr::kable(df_final, format = "html", escape = FALSE)
 ```
+
+## Method 2.1
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(base64enc)
+library(htmltools)
+
+# Create sample data
+df <- data.frame(Country = rep(c("A", "B", "C"), 5), 
+                 Year = c(rep(2000, 3), rep(2001, 3), rep(2002, 3), rep(2003, 3), rep(2004, 3)),
+                 Value = sample(1000:2000, size = 15))
+
+# Function to create a base64-encoded sparkline with annotations
+create_sparkline <- function(data) {
+  # Get first and last values
+  first_val <- head(data$Value, 1)
+  last_val <- tail(data$Value, 1)
+  
+  p <- ggplot(data, aes(x = Year, y = Value)) + 
+    geom_line(size = 1.5, color = ifelse(last_val < first_val, "firebrick", "springgreen")) +
+    # Add points for first and last value
+    geom_point(data = data[c(1, nrow(data)),], size = 2, 
+               color = ifelse(last_val < first_val, "firebrick", "springgreen")) +
+    # Add labels for first and last value
+    geom_text(data = data[c(1, nrow(data)),], 
+              aes(label = Value), 
+              hjust = c(1.2, -0.2), vjust = 0.5, size = 2.5) +
+    theme_void() +
+    theme(plot.margin = margin(5, 10, 5, 10))
+  
+  # Save as a temporary PNG file and encode
+  tmp <- tempfile(fileext = ".png")
+  ggsave(tmp, p, width = 3, height = 0.8, dpi = 100)
+  img_data <- base64encode(readBin(tmp, "raw", file.info(tmp)$size))
+  unlink(tmp)
+  
+  # Create HTML img tag with base64 data
+  return(paste0("<img src='data:image/png;base64,", img_data, "' style='height:30px;'>"))
+}
+
+# Generate sparklines for each country
+sparklines <- df %>%
+  group_by(Country) %>%
+  group_map(~create_sparkline(.x), .keep = TRUE) %>%
+  unlist()
+
+# Create final table
+df_final <- df %>%
+  pivot_wider(names_from = Year, values_from = Value) %>%
+  mutate(Sparkline = sparklines)
+
+# Display the table
+knitr::kable(df_final, format = "html", escape = FALSE)
+```
+
+## Method 2.2
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(base64enc)
+library(htmltools)
+
+# Create sample data
+df <- data.frame(Country = rep(c("A", "B", "C"), 5), 
+                 Year = c(rep(2000, 3), rep(2001, 3), rep(2002, 3), rep(2003, 3), rep(2004, 3)),
+                 Value = sample(1000:2000, size = 15))
+
+# Function to create a base64-encoded sparkline with tooltip
+create_sparkline_with_tooltip <- function(data) {
+  # Create the sparkline
+  p <- ggplot(data, aes(x = Year, y = Value)) + 
+    geom_line(size = 1.5, color = ifelse(tail(data$Value, n = 1) < head(data$Value, n = 1), 
+                                         "firebrick", "springgreen")) + 
+    theme_void() +
+    theme(plot.margin = margin(0, 0, 0, 0))
+  
+  # Save as a temporary PNG file and encode
+  tmp <- tempfile(fileext = ".png")
+  ggsave(tmp, p, width = 2, height = 0.5, dpi = 72)
+  img_data <- base64encode(readBin(tmp, "raw", file.info(tmp)$size))
+  unlink(tmp)
+  
+  # Create tooltip content
+  tooltip_content <- paste(
+    data$Year, ": ", data$Value,
+    collapse = "<br>"
+  )
+  
+  # Create HTML img tag with base64 data and tooltip attribute
+  return(paste0("<div class='sparkline-container' data-tooltip='", tooltip_content, "'>",
+                "<img src='data:image/png;base64,", img_data, "' style='height:20px;'>",
+                "</div>"))
+}
+
+# Generate sparklines for each country
+sparklines <- df %>%
+  group_by(Country) %>%
+  group_map(~create_sparkline_with_tooltip(.x), .keep = TRUE) %>%
+  unlist()
+
+# Create final table
+df_final <- df %>%
+  pivot_wider(names_from = Year, values_from = Value) %>%
+  mutate(Sparkline = sparklines)
+
+# Create CSS for tooltips
+tooltip_css <- "
+<style>
+.sparkline-container {
+  position: relative;
+  display: inline-block;
+}
+
+.sparkline-container:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+</style>
+"
+
+# Display the table with tooltip CSS
+htmltools::HTML(paste0(
+  tooltip_css,
+  knitr::kable(df_final, format = "html", escape = FALSE)
+))
+```
+
+## Method 2.3
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(base64enc)
+library(htmltools)
+
+# Create sample data
+df <- data.frame(Country = rep(c("A", "B", "C"), 5), 
+                 Year = c(rep(2000, 3), rep(2001, 3), rep(2002, 3), rep(2003, 3), rep(2004, 3)),
+                 Value = sample(1000:2000, size = 15))
+
+# Function to create a base64-encoded sparkline with both annotations and tooltip
+create_enhanced_sparkline <- function(data) {
+  # Get first and last values
+  first_val <- head(data$Value, 1)
+  last_val <- tail(data$Value, 1)
+  
+  p <- ggplot(data, aes(x = Year, y = Value)) + 
+    geom_line(size = 1.5, color = ifelse(last_val < first_val, "firebrick", "springgreen")) +
+    # Add points for first and last value
+    geom_point(data = data[c(1, nrow(data)),], size = 2, 
+               color = ifelse(last_val < first_val, "firebrick", "springgreen")) +
+    # Add labels for min and max values
+    theme_void() +
+    theme(plot.margin = margin(5, 10, 5, 10))
+  
+  # Save as a temporary PNG file and encode
+  tmp <- tempfile(fileext = ".png")
+  ggsave(tmp, p, width = 2.5, height = 0.6, dpi = 100)
+  img_data <- base64encode(readBin(tmp, "raw", file.info(tmp)$size))
+  unlink(tmp)
+  
+  # Create tooltip content with all values
+  tooltip_content <- paste(
+    data$Year, ": ", data$Value,
+    collapse = "<br>"
+  )
+  
+  # Create HTML with tooltip
+  return(paste0("<div class='sparkline-container' data-tooltip='", tooltip_content, "'>",
+                "<img src='data:image/png;base64,", img_data, "' style='height:30px;'>",
+                "<div class='sparkline-values'>", first_val, " → ", last_val, "</div>",
+                "</div>"))
+}
+
+# Generate sparklines for each country
+sparklines <- df %>%
+  group_by(Country) %>%
+  group_map(~create_enhanced_sparkline(.x), .keep = TRUE) %>%
+  unlist()
+
+# Create final table
+df_final <- df %>%
+  pivot_wider(names_from = Year, values_from = Value) %>%
+  mutate(Sparkline = sparklines)
+
+# Create CSS for tooltips and values
+enhanced_css <- "
+<style>
+.sparkline-container {
+  position: relative;
+  display: inline-block;
+}
+
+.sparkline-container:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.sparkline-values {
+  font-size: 10px;
+  color: #666;
+  margin-top: 2px;
+  text-align: center;
+}
+</style>
+"
+
+# Display the table with enhanced CSS
+htmltools::HTML(paste0(
+  enhanced_css,
+  knitr::kable(df_final, format = "html", escape = FALSE)
+))
+```
+
 # Method 3
 ```{r}
 library(tidyverse)
