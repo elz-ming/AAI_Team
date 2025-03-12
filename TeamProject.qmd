@@ -40,7 +40,7 @@ library(dplyr)
 ```{r}
 # TODO 1a: Write a function to display data tables beautifully
 # Function to style a data table nicely
-style_nice_table <- function(data, title = "Styled Cars", subtitle = NULL) {
+style_table <- function(data, title = "Styled Table", subtitle = NULL) {
   data |>
     gt() |>
     tab_header(
@@ -52,7 +52,7 @@ style_nice_table <- function(data, title = "Styled Cars", subtitle = NULL) {
       decimals = 2
     ) |>
     tab_style(
-      style = cell_text(weight = "bold"),
+      style = cell_text(weight = "bold", align = "center"), # Center-align headers
       locations = cells_column_labels()
     ) |>
     tab_style(
@@ -65,6 +65,10 @@ style_nice_table <- function(data, title = "Styled Cars", subtitle = NULL) {
         color = "black",
         weight = px(1)
       ),
+      locations = cells_body()
+    ) |>
+    tab_style(
+      style = cell_text(align = "center"), # Center-align body cells
       locations = cells_body()
     ) |>
     tab_options(
@@ -78,11 +82,18 @@ style_nice_table <- function(data, title = "Styled Cars", subtitle = NULL) {
     )
 }
 
-# Example usage
-data <- read_csv("data/PublicTransportOperationAndRidershipAnnual.csv") |> head()
-
-styled_table <- style_nice_table(data, title = "Ridership Data", subtitle = "1990-2023 MRT & LRT")
-styled_table
+# New function for yearly data (inherits styling but customizes title/subtitle alignment)
+style_yearly_table <- function(data, title = "Styled Table", subtitle = NULL) {
+  # Start with the original style_table function
+  table <- style_table(data, title, subtitle)
+  
+  # Use HTML to left-align the title and subtitle
+  table |>
+    tab_header(
+      title = html(paste0("<div style='text-align: left;'>", title, "</div>")),
+      subtitle = html(paste0("<div style='text-align: left;'>", subtitle, "</div>"))
+    )
+}
 ```
 
 ## 0.2 : Importing Data
@@ -92,61 +103,21 @@ This dataset entails monthly ridership for every month of the year, for 5 years 
 #| eval: true
 #| echo: true
 
-# Function to style a data table nicely
-style_nice_table <- function(data, title = "Styled Table", subtitle = NULL) {
-  data |>
-    gt() |>
-    tab_header(
-      title = title,
-      subtitle = subtitle
-    ) |>
-    fmt_number(
-      columns = where(is.numeric),
-      decimals = 2
-    ) |>
-    tab_style(
-      style = cell_text(weight = "bold"),
-      locations = cells_column_labels()
-    ) |>
-    tab_style(
-      style = cell_fill(color = "lightblue"),
-      locations = cells_column_labels()
-    ) |>
-    tab_style(
-      style = cell_borders(
-        sides = c("left", "right", "top", "bottom"),
-        color = "black",
-        weight = px(1)
-      ),
-      locations = cells_body()
-    ) |>
-    tab_options(
-      table.font.size = px(14),
-      column_labels.font.size = px(16),
-      table.width = pct(100)
-    ) |>
-    tab_footnote(
-      footnote = "Data sourced from LTA",
-      locations = cells_title(groups = "title")
-    )
-}
-
 # Load the monthly data from the CSV file
 monthly_data <- read_csv("Data/monthly_ave_daily_pt_ridership.csv", show_col_types = FALSE) |>
   as_tibble()
 
-# Print the first 10 rows of the raw data
-print(monthly_data, n = 10)
+monthly_data_top10 <- monthly_data |> head(10)
 
-# Use the styling function to display the monthly data beautifully
-styled_table <- style_nice_table(
-  data = monthly_data,
+# Apply the styling function to the monthly data
+styled_monthly_table <- style_table(
+  data = monthly_data_top10,
   title = "Monthly Average Daily Public Transport Ridership",
-  subtitle = "Dataset: monthly_ave_daily_pt_ridership.csv"
+  subtitle = "Top 10 Rows"
 )
 
 # Display the styled table
-styled_table
+styled_monthly_table 
 ```
 
 
@@ -160,6 +131,14 @@ yearly_data <- read_csv("Data/PublicTransportOperationAndRidershipAnnual.csv", s
   as_tibble()
 print(yearly_data, n=10)
 # TODO 1c: Use the function in 1a to display the yearly data beautifully
+
+styled_yearly_table <- style_yearly_table(
+  data = yearly_data,
+  title = "Yearly Public Transport Ridership and Operation Data",
+  subtitle = "All Rows"
+)
+
+styled_yearly_table
 ```
 
 # Step 1 : Data Cleaning and Engineering
