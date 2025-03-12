@@ -129,9 +129,8 @@ This dataset entails yearly ridership for for 33 years (1990 to 2023)
 
 yearly_data <- read_csv("Data/PublicTransportOperationAndRidershipAnnual.csv", show_col_types=FALSE) |>
   as_tibble()
-print(yearly_data, n=10)
-# TODO 1c: Use the function in 1a to display the yearly data beautifully
 
+# TODO 1c: Use the function in 1a to display the yearly data beautifully
 styled_yearly_table <- style_yearly_table(
   data = yearly_data,
   title = "Yearly Public Transport Ridership and Operation Data",
