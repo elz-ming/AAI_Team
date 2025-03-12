@@ -1,0 +1,89 @@
+---
+title: "sparkline"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(sparkline)
+library(DT)
+
+# Create sample data
+df <- data.frame(Country = rep(c("A", "B", "C"), 5), 
+                 Year = c(rep(2000, 3), rep(2001, 3), rep(2002, 3), rep(2003, 3), rep(2004, 3)),
+                 Value = sample(1000:2000, size = 15))
+
+# Transform to wide format
+df_wide <- df %>%
+  pivot_wider(names_from = Year, values_from = Value)
+
+# Extract the values for sparklines
+sparkline_data <- df %>%
+  group_by(Country) %>%
+  summarize(values = list(Value))
+
+# Create a new dataframe with sparklines
+df_final <- df_wide %>%
+  mutate(Sparkline = spk_chr(sparkline_data$values, 
+                            type = "line",
+                            width = 120, 
+                            height = 40,
+                            lineColor = ifelse(sapply(sparkline_data$values, function(x) tail(x, 1)) < 
+                                               sapply(sparkline_data$values, function(x) head(x, 1)), 
+                                               "firebrick", "springgreen")))
+
+# Display with interactive table
+datatable(df_final, escape = FALSE, options = list(
+  columnDefs = list(list(
+    targets = which(names(df_final) == "Sparkline"),
+    render = JS("function(data, type, row, meta) {
+                  return type === 'display' ? data : '';
+                }")
+  ))
+)) %>% 
+  spk_add_deps()
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(base64enc)
+library(htmltools)
+
+# Create sample data
+df <- data.frame(Country = rep(c("A", "B", "C"), 5), 
+                 Year = c(rep(2000, 3), rep(2001, 3), rep(2002, 3), rep(2003, 3), rep(2004, 3)),
+                 Value = sample(1000:2000, size = 15))
+
+# Function to create a base64-encoded sparkline
+create_sparkline <- function(data) {
+  p <- ggplot(data, aes(x = Year, y = Value)) + 
+    geom_line(size = 1.5, color = ifelse(tail(data$Value, n = 1) < head(data$Value, n = 1), 
+                                         "firebrick", "springgreen")) + 
+    theme_void() +
+    theme(plot.margin = margin(0, 0, 0, 0))
+  
+  # Save as a temporary PNG file and encode
+  tmp <- tempfile(fileext = ".png")
+  ggsave(tmp, p, width = 2, height = 0.5, dpi = 72)
+  img_data <- base64encode(readBin(tmp, "raw", file.info(tmp)$size))
+  unlink(tmp)
+  
+  # Create HTML img tag with base64 data
+  return(paste0("<img src='data:image/png;base64,", img_data, "' style='height:20px;'>"))
+}
+
+# Generate sparklines for each country
+sparklines <- df %>%
+  group_by(Country) %>%
+  group_map(~create_sparkline(.x), .keep = TRUE) %>%
+  unlist()
+
+# Create final table
+df_final <- df %>%
+  pivot_wider(names_from = Year, values_from = Value) %>%
+  mutate(Sparkline = sparklines)
+
+# Display the table
+knitr::kable(df_final, format = "html", escape = FALSE)
+```
