@@ -37,9 +37,21 @@ library(dplyr)
 
 ```
 
+## 0.2 : Importing Data
+### Dataset 1 : Monthly Data
+This dataset entails monthly ridership for every month of the year, for 5 years (2019 to 2024)
 ```{r}
-# TODO 1a: Write a function to display data tables beautifully
-# Function to style a data table nicely
+#| eval: true
+#| echo: false
+
+# Load the monthly data from the CSV file
+monthly_data <- read_csv("Data/monthly_ave_daily_pt_ridership.csv", show_col_types = FALSE) |>
+  as_tibble()
+
+# Get first 10 rows of data
+monthly_data_top10 <- monthly_data |> head(10)
+
+# Define a function to render monthly data
 style_table <- function(data, title = "Styled Table", subtitle = NULL) {
   data |>
     gt() |>
@@ -82,33 +94,6 @@ style_table <- function(data, title = "Styled Table", subtitle = NULL) {
     )
 }
 
-# New function for yearly data (inherits styling but customizes title/subtitle alignment)
-style_yearly_table <- function(data, title = "Styled Table", subtitle = NULL) {
-  # Start with the original style_table function
-  table <- style_table(data, title, subtitle)
-  
-  # Use HTML to left-align the title and subtitle
-  table |>
-    tab_header(
-      title = html(paste0("<div style='text-align: left;'>", title, "</div>")),
-      subtitle = html(paste0("<div style='text-align: left;'>", subtitle, "</div>"))
-    )
-}
-```
-
-## 0.2 : Importing Data
-### Dataset 1 : Monthly Data
-This dataset entails monthly ridership for every month of the year, for 5 years (2019 to 2024)
-```{r}
-#| eval: true
-#| echo: true
-
-# Load the monthly data from the CSV file
-monthly_data <- read_csv("Data/monthly_ave_daily_pt_ridership.csv", show_col_types = FALSE) |>
-  as_tibble()
-
-monthly_data_top10 <- monthly_data |> head(10)
-
 # Apply the styling function to the monthly data
 styled_monthly_table <- style_table(
   data = monthly_data_top10,
@@ -125,18 +110,33 @@ styled_monthly_table
 This dataset entails yearly ridership for for 33 years (1990 to 2023)
 ```{r}
 #| eval: true
-#| echo: true
+#| echo: false
 
+# Load the yearly data from the CSV file
 yearly_data <- read_csv("Data/PublicTransportOperationAndRidershipAnnual.csv", show_col_types=FALSE) |>
   as_tibble()
 
-# TODO 1c: Use the function in 1a to display the yearly data beautifully
+# Define a function to render yearly data
+style_yearly_table <- function(data, title = "Styled Table", subtitle = NULL) {
+  # Start with the original style_table function
+  table <- style_table(data, title, subtitle)
+  
+  # Use HTML to left-align the title and subtitle
+  table |>
+    tab_header(
+      title = html(paste0("<div style='text-align: left;'>", title, "</div>")),
+      subtitle = html(paste0("<div style='text-align: left;'>", subtitle, "</div>"))
+    )
+}
+
+# Apply the styling function to the yearly data
 styled_yearly_table <- style_yearly_table(
   data = yearly_data,
   title = "Yearly Public Transport Ridership and Operation Data",
   subtitle = "All Rows"
 )
 
+# Display the styled table
 styled_yearly_table
 ```
 
@@ -152,9 +152,13 @@ styled_yearly_table
 #| eval: true
 #| echo: true
 
-# TODO 2a: Clean the monthly data, and display them
-monthly_data <- monthly_data %>%
-  separate(month, into = c("month", "year"), sep = "-", convert = TRUE)
+monthly_data <- monthly_data |>
+  separate(month, into = c("month", "year"), sep = "-", convert = TRUE) |>
+  mutate(
+    year = as.numeric(ifelse(year < 100, 2000 + year, year))
+  ) |>
+  arrange(year, match(month, month.abb), mode)
+
 kable(head(monthly_data))
 ```
 
@@ -167,13 +171,13 @@ kable(head(monthly_data))
 #| eval: true
 #| echo: true
 
-# TODO 2b: Clean the yearly data, and display them
 yearly_data <- t(yearly_data)
 yearly_data <- as.data.frame(yearly_data)
 colnames(yearly_data) <- yearly_data[1, ]
 yearly_data <- yearly_data[-1, ]
 yearly_data$Year <- as.numeric(rownames(yearly_data))
 ```
+
 - **Filter Data from 2018 Onwards and Reorganize Columns**
   - Remove records before **2018** to deal with missing data.
   - Reset row names and relocate **Year column** to the first position.
@@ -183,9 +187,10 @@ yearly_data$Year <- as.numeric(rownames(yearly_data))
 
 yearly_data <- yearly_data[yearly_data$Year >= 2018, ]
 rownames(yearly_data) <- NULL
-yearly_data <- yearly_data %>% relocate(Year, .before = everything())
-yearly_data <- yearly_data %>% rename(`Average Daily Trip - P2P` = `Average Daily Trip - Point-To-Point (P2P) Transport (Taxis And Private Hire Cars)`)
+yearly_data <- yearly_data |> relocate(Year, .before = everything())
+yearly_data <- yearly_data |> rename(`Average Daily Trip - P2P` = `Average Daily Trip - Point-To-Point (P2P) Transport (Taxis And Private Hire Cars)`)
 ```
+
 - **Convert Ridership Data and MRT/LRT km Operated Data from Thousands to Actual Values**
   - Multiply relevant columns by **1000**.
 ```{r}
@@ -207,27 +212,12 @@ for (col in columns_to_multiply) {
 
 kable(head(yearly_data))
 ```
-## Joining Data
-```{r}
-#| eval: true
-#| echo: true
-
-# TODO 2c: Join both tables after cleaning
-```
-
-
 
 # Step 2 : Generate the Improved Visualization
 ## 1.1 Old Visualization
 ::: {#fig1 style="text-align: center;"}
 ![Figure 1: Original Visualization from the Straits Times (2025)](Data/figure_2.png){width=70%}
 :::
-```{r}
-#| eval: true
-#| echo: true
-
-# TODO 3a: Replace the image with .png file and change the display code to use .png file
-```
 
 ## 2.2 Improved Visualization
 ```{r}
