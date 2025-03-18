@@ -223,8 +223,125 @@ kable(head(yearly_data))
 ```{r}
 #| eval: true
 #| echo: true
+#| message: false
+#| warning: false
+# Process monthly data for sparklines
+monthly_summary <- monthly_data |>
+  filter(year %in% 2019:2023) |>
+  group_by(mode, year, month) |>
+  summarise(
+    avg_ridership = mean(ridership, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(mode, year)
 
-# TODO 3b: Create the Sparkline visualization
+# Create sparkline table with individual axes
+sparkline_table <- monthly_summary |>
+  group_by(mode) |>
+  arrange(year) |>
+  summarise(
+    Trend = list(avg_ridership),
+    .groups = "drop"
+  ) |>
+  gt() |>
+  gtExtras::gt_plt_sparkline(
+    column = Trend,
+    type = "default",
+    same_limit = FALSE,  # Individual y-axis scales
+    label = TRUE,        # Show min/max labels
+    palette = c("#003DA5", "#003DA5", "#003DA5", "#003DA5", "#003DA5"),  # Singapore blue
+    fig_dim = c(10, 120)  # Width x Height in pixels
+  ) |>
+  cols_label(
+    mode = "Transport Mode",
+    Trend = "2019-2023 Trend"
+  ) |>
+  tab_header(
+    title = md("**Public Transport Ridership Trends**"),
+    subtitle = "Monthly Average Daily Ridership by Mode"
+  ) |>
+  fmt_number(
+    columns = where(is.numeric),
+    decimals = 0
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_options(
+    table.font.size = px(14),
+    column_labels.font.size = px(16),
+    table.width = pct(90)
+  ) |>
+  tab_source_note(
+    source_note = "Data Source: Land Transport Authority (LTA)"
+  )
+
+# Display the table
+sparkline_table
+```
+
+## 2.3 Improved Visualization Yearly
+```{r}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+# Process monthly data for sparklines
+monthly_summary <- monthly_data |>
+  filter(year %in% 2019:2023) |>
+  group_by(mode, year) |>
+  summarise(
+    avg_ridership = mean(ridership, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(mode, year)
+
+# Create sparkline table with individual axes
+sparkline_table <- monthly_summary |>
+  group_by(mode) |>
+  arrange(year) |>
+  summarise(
+    Trend = list(avg_ridership),
+    .groups = "drop"
+  ) |>
+  gt() |>
+  gtExtras::gt_plt_sparkline(
+    column = Trend,
+    type = "default",
+    same_limit = FALSE,  # Individual y-axis scales
+    label = TRUE,        # Show min/max labels
+    palette = c("#003DA5", "#003DA5", "#003DA5", "#003DA5", "#003DA5"),  # Singapore blue
+    fig_dim = c(10, 120)  # Width x Height in pixels
+  ) |>
+  cols_label(
+    mode = "Transport Mode",
+    Trend = "2019-2023 Trend"
+  ) |>
+  tab_header(
+    title = md("**Public Transport Ridership Trends**"),
+    subtitle = "Monthly Average Daily Ridership by Mode"
+  ) |>
+  fmt_number(
+    columns = where(is.numeric),
+    decimals = 0
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_options(
+    table.font.size = px(14),
+    column_labels.font.size = px(16),
+    table.width = pct(90)
+  ) |>
+  tab_source_note(
+    source_note = "Data Source: Land Transport Authority (LTA)"
+  )
+
+# Display the table
+sparkline_table
+```
 ```
 
 # Step 3 : Data Analysis
