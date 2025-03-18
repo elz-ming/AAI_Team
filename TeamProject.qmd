@@ -83,6 +83,10 @@ style_table <- function(data, title = "Styled Table", subtitle = NULL) {
       style = cell_text(align = "center"), # Center-align body cells
       locations = cells_body()
     ) |>
+    tab_style(
+      style = cell_text(align = "left"),
+      locations = cells_footnotes()
+    ) |>
     tab_options(
       table.font.size = px(14),
       column_labels.font.size = px(16),
@@ -102,7 +106,8 @@ styled_monthly_table <- style_table(
 )
 
 # Display the styled table
-styled_monthly_table 
+styled_monthly_table
+
 ```
 
 
@@ -116,25 +121,21 @@ This dataset entails yearly ridership for for 33 years (1990 to 2023)
 yearly_data <- read_csv("Data/PublicTransportOperationAndRidershipAnnual.csv", show_col_types=FALSE) |>
   as_tibble()
 
-# Define a function to render yearly data
-style_yearly_table <- function(data, title = "Styled Table", subtitle = NULL) {
-  # Start with the original style_table function
-  table <- style_table(data, title, subtitle)
-  
-  # Use HTML to left-align the title and subtitle
-  table |>
-    tab_header(
-      title = html(paste0("<div style='text-align: left;'>", title, "</div>")),
-      subtitle = html(paste0("<div style='text-align: left;'>", subtitle, "</div>"))
-    )
-}
 
-# Apply the styling function to the yearly data
-styled_yearly_table <- style_yearly_table(
+styled_yearly_table <- style_table(
   data = yearly_data,
-  title = "Yearly Public Transport Ridership and Operation Data",
-  subtitle = "All Rows"
-)
+  title = md("Yearly Public Transport Ridership and Operation Data"),
+  subtitle = md("_All Rows_")
+) |>
+  tab_options(
+    table.align = "left",  
+    heading.align = "left"  
+  ) |>
+  tab_style(
+    style = cell_text(align = "left"),  
+    locations = cells_title(groups = c("title", "subtitle"))
+  )
+
 
 # Display the styled table
 styled_yearly_table
