@@ -63,14 +63,24 @@ style_table <- function(data, title = "Styled Table", subtitle = NULL) {
       columns = where(is.numeric),
       decimals = 2
     ) |>
+    # Apply bold, centered text, light blue fill, and borders to column labels
     tab_style(
-      style = cell_text(weight = "bold", align = "center"), # Center-align headers
+      style = list(
+        cell_text(weight = "bold", align = "center"), # Center-align headers
+        cell_fill(color = "lightblue") # Light blue fill
+      ),
       locations = cells_column_labels()
     ) |>
+    # Explicitly add borders to column labels
     tab_style(
-      style = cell_fill(color = "lightblue"),
+      style = cell_borders(
+        sides = c("left", "right", "top", "bottom"), # Apply borders to all sides
+        color = "black",
+        weight = px(1) # Increase border weight for better visibility
+      ),
       locations = cells_column_labels()
     ) |>
+    # Apply borders to body cells
     tab_style(
       style = cell_borders(
         sides = c("left", "right", "top", "bottom"),
@@ -79,22 +89,37 @@ style_table <- function(data, title = "Styled Table", subtitle = NULL) {
       ),
       locations = cells_body()
     ) |>
+    # Center-align text in body cells
     tab_style(
-      style = cell_text(align = "center"), # Center-align body cells
+      style = cell_text(align = "center"),
       locations = cells_body()
     ) |>
+    # Left-align text in footnotes
     tab_style(
       style = cell_text(align = "left"),
       locations = cells_footnotes()
     ) |>
+    # Set table options
     tab_options(
       table.font.size = px(14),
       column_labels.font.size = px(16),
-      table.width = pct(100)
+      table.width = pct(100),
+      table.border.top.style = "solid", # Ensure top border is visible
+      table.border.bottom.style = "solid" # Ensure bottom border is visible
     ) |>
+    # Add footnote
     tab_footnote(
       footnote = "Data sourced from ridership LTA",
       locations = cells_title(groups = "title")
+    ) |>
+    # Apply top border to footnotes
+    tab_style(
+      style = cell_borders(
+        sides = c("top"),
+        color = "black",
+        weight = px(1)
+      ),
+      locations = cells_footnotes()
     )
 }
 
@@ -107,7 +132,6 @@ styled_monthly_table <- style_table(
 
 # Display the styled table
 styled_monthly_table
-
 ```
 
 
