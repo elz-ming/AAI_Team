@@ -31,7 +31,8 @@ library(knitr)
 library(readxl)
 library(tidyquant)
 library(ggplot2)
-library(gt)
+library(corrplot)
+library(ggcorrplot)
 library(gt)
 library(dplyr)
 
@@ -235,7 +236,12 @@ for (col in columns_to_multiply) {
   yearly_data[[col]] <- as.numeric(yearly_data[[col]]) * 1000
 }
 
+# Convert character columns to numeric
+yearly_data <- yearly_data %>%
+  mutate(across(where(is.character), as.numeric))
+
 kable(head(yearly_data))
+
 ```
 
 # Step 2 : Generate the Improved Visualization
@@ -391,7 +397,23 @@ sparkline_table
 #| eval: true
 #| echo: true
 
-# TODO 6: Data analysis using yearly data
+# Select only the relevant columns
+selected_data <- yearly_data %>%
+  select(`Average Daily Ridership - MRT`, 
+         `Average Daily Ridership - LRT`, 
+         `Average Daily Ridership - Public Bus`, 
+         `Average Daily Trip - P2P`)
+
+# Compute correlation matrix
+cor_matrix <- cor(selected_data, use = "complete.obs")
+
+ggcorrplot(cor_matrix, 
+           lab = TRUE,
+           hc.order = TRUE,
+           lab_size = 5,        
+           colors = c("red", "white", "blue")) +
+  ggtitle("Correlation Matrix of Public Transport Usage")
+
 ```
 
 ## 3.4 Time Series Analysis
