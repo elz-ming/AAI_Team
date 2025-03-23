@@ -110,7 +110,7 @@ style_table <- function(data, title = "Styled Table", subtitle = NULL) {
     ) |>
     # Add footnote
     tab_footnote(
-      footnote = "Data sourced from ridership LTA",
+      footnote = footnote,
       locations = cells_title(groups = "title")
     ) |>
     # Apply top border to footnotes
@@ -128,7 +128,8 @@ style_table <- function(data, title = "Styled Table", subtitle = NULL) {
 styled_monthly_table <- style_table(
   data = monthly_data_top10,
   title = "Monthly Average Daily Public Transport Ridership",
-  subtitle = "Top 10 Rows"
+  subtitle = "Top 10 Rows",
+  footnote = "Data sourced from Land Transport Authority (LTA)"
 )
 
 # Display the styled table
@@ -150,7 +151,8 @@ yearly_data <- read_csv("Data/PublicTransportOperationAndRidershipAnnual.csv", s
 styled_yearly_table <- style_table(
   data = yearly_data,
   title = md("Yearly Public Transport Ridership and Operation Data"),
-  subtitle = md("_All Rows_")
+  subtitle = md("_All Rows_"),
+  footnote = "Data sourced from Singapore Department of Statistics"
 ) |>
   tab_options(
     table.align = "left",  
@@ -159,7 +161,7 @@ styled_yearly_table <- style_table(
   tab_style(
     style = cell_text(align = "left"),  
     locations = cells_title(groups = c("title", "subtitle"))
-  )
+  ) 
 
 
 # Display the styled table
