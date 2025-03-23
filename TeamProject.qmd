@@ -53,7 +53,7 @@ monthly_data <- read_csv("Data/monthly_ave_daily_pt_ridership.csv", show_col_typ
 monthly_data_top10 <- monthly_data |> head(10)
 
 # Define a function to render monthly data
-style_table <- function(data, title = "Styled Table", subtitle = NULL) {
+style_table <- function(data, title = "Styled Table", subtitle = NULL, footnote = NULL) {
   data |>
     gt() |>
     tab_header(
@@ -161,7 +161,7 @@ styled_yearly_table <- style_table(
   tab_style(
     style = cell_text(align = "left"),  
     locations = cells_title(groups = c("title", "subtitle"))
-  ) 
+  )
 
 
 # Display the styled table
