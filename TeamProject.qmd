@@ -303,11 +303,15 @@ sparkline
 # Create sparklines for MRT, Bus, and LRT with start, end, and lowest point values
 mrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - MRT`)) +
   geom_line(color = "#008b8b", size = 1) +
+  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
+             aes(x = Year, y = `Average Daily Ridership - MRT`),
+             color = "#003838", size = 3) +
+
   # Annotate the start value
   geom_text(aes(x = min(Year), 
                 y = yearly_data$`Average Daily Ridership - MRT`[which.min(Year)], 
                 label = paste(yearly_data$`Average Daily Ridership - MRT`[which.min(Year)])),
-            vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
   # Annotate the end value
   geom_text(aes(x = max(Year), 
                 y = yearly_data$`Average Daily Ridership - MRT`[which.max(Year)], 
@@ -319,16 +323,19 @@ mrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership 
   geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - MRT`)],
                 y = min(yearly_data$`Average Daily Ridership - MRT`),
                 label = paste(round(min(yearly_data$`Average Daily Ridership - MRT`), 2))),
-            vjust = -1, hjust = 0.5, color = "#4D4D4D", size = 4) +
+            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
   theme_void()
 
 # Similarly update sparklines for Bus and LRT
 bus_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - Public Bus`)) +
   geom_line(color = "#008b8b", size = 1) +
+  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
+             aes(x = Year, y = `Average Daily Ridership - Public Bus`),
+             color = "#003838", size = 3) +
   geom_text(aes(x = min(Year), 
                 y = yearly_data$`Average Daily Ridership - Public Bus`[which.min(Year)], 
                 label = paste(yearly_data$`Average Daily Ridership - Public Bus`[which.min(Year)])),
-            vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
   geom_text(aes(x = max(Year), 
                 y = yearly_data$`Average Daily Ridership - Public Bus`[which.max(Year)], 
                 label = paste(yearly_data$`Average Daily Ridership - Public Bus`[which.max(Year)])),
@@ -338,15 +345,18 @@ bus_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership 
   geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - Public Bus`)],
                 y = min(yearly_data$`Average Daily Ridership - Public Bus`),
                 label = paste(round(min(yearly_data$`Average Daily Ridership - Public Bus`), 2))),
-            vjust = -1, hjust = 0.5, color = "#4D4D4D", size = 4) +
+            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
   theme_void()
 
 lrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - LRT`)) +
   geom_line(color = "#008b8b", size = 1) +
+  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
+             aes(x = Year, y = `Average Daily Ridership - LRT`),
+             color = "#003838", size = 3) +
   geom_text(aes(x = min(Year), 
                 y = yearly_data$`Average Daily Ridership - LRT`[which.min(Year)], 
                 label = paste(yearly_data$`Average Daily Ridership - LRT`[which.min(Year)])),
-            vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
   geom_text(aes(x = max(Year), 
                 y = yearly_data$`Average Daily Ridership - LRT`[which.max(Year)], 
                 label = paste(yearly_data$`Average Daily Ridership - LRT`[which.max(Year)])),
@@ -356,7 +366,7 @@ lrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership 
   geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - LRT`)],
                 y = min(yearly_data$`Average Daily Ridership - LRT`),
                 label = paste(round(min(yearly_data$`Average Daily Ridership - LRT`), 2))),
-            vjust = -1, hjust = 0.5, color = "#4D4D4D", size = 4) +
+            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
   theme_void()
 
 # Save sparklines as images
