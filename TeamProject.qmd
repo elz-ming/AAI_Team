@@ -403,6 +403,123 @@ travel_table
 
 ```
 
+```{r}
+
+# Create a date column from the month and year columns (assuming month is abbreviated, e.g. "Jan")
+monthly_data <- monthly_data %>%
+  mutate(date = as.Date(paste(year, month, "01", sep = "-"), format = "%Y-%b-%d"))
+
+# ---------------------------
+# MRT Sparkline using Monthly Data
+# ---------------------------
+monthly_data <- monthly_data %>% filter(!is.na(date))
+mrt_data <- monthly_data %>% filter(mode == "MRT")
+
+mrt_sparkline <- ggplot(mrt_data, aes(x = date, y = ridership)) +
+  geom_line(color = "#008b8b", size = 1) +
+  geom_point(data = mrt_data %>% filter(date == min(date) | date == max(date)),
+             aes(x = date, y = ridership),
+             color = "#003838", size = 3) +
+  # Annotate the start value
+  geom_text(data = mrt_data %>% filter(date == min(date)),
+            aes(x = date, y = ridership, label = ridership),
+            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
+  # Annotate the end value
+  geom_text(data = mrt_data %>% filter(date == max(date)),
+            aes(x = date, y = ridership, label = ridership),
+            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
+  # Add a vertical line and annotate the lowest value
+  geom_vline(xintercept = mrt_data$date[which.min(mrt_data$ridership)],
+             linetype = "dotted", color = "red") +
+  geom_text(data = mrt_data %>% filter(date == mrt_data$date[which.min(mrt_data$ridership)]),
+            aes(x = date, y = ridership, label = round(ridership, 2)),
+            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
+  theme_void()
+
+# ---------------------------
+# Bus Sparkline using Monthly Data
+# ---------------------------
+bus_data <- monthly_data %>% filter(mode == "Public Bus")
+
+bus_sparkline <- ggplot(bus_data, aes(x = date, y = ridership)) +
+  geom_line(color = "#008b8b", size = 1) +
+  geom_point(data = bus_data %>% filter(date == min(date) | date == max(date)),
+             aes(x = date, y = ridership),
+             color = "#003838", size = 3) +
+  geom_text(data = bus_data %>% filter(date == min(date)),
+            aes(x = date, y = ridership, label = ridership),
+            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
+  geom_text(data = bus_data %>% filter(date == max(date)),
+            aes(x = date, y = ridership, label = ridership),
+            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
+  geom_vline(xintercept = bus_data$date[which.min(bus_data$ridership)],
+             linetype = "dotted", color = "red") +
+  geom_text(data = bus_data %>% filter(date == bus_data$date[which.min(bus_data$ridership)]),
+            aes(x = date, y = ridership, label = round(ridership, 2)),
+            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
+  theme_void()
+
+# ---------------------------
+# LRT Sparkline using Monthly Data
+# ---------------------------
+lrt_data <- monthly_data %>% filter(mode == "LRT")
+
+lrt_sparkline <- ggplot(lrt_data, aes(x = date, y = ridership)) +
+  geom_line(color = "#008b8b", size = 1) +
+  geom_point(data = lrt_data %>% filter(date == min(date) | date == max(date)),
+             aes(x = date, y = ridership),
+             color = "#003838", size = 3) +
+  geom_text(data = lrt_data %>% filter(date == min(date)),
+            aes(x = date, y = ridership, label = ridership),
+            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
+  geom_text(data = lrt_data %>% filter(date == max(date)),
+            aes(x = date, y = ridership, label = ridership),
+            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
+  geom_vline(xintercept = lrt_data$date[which.min(lrt_data$ridership)],
+             linetype = "dotted", color = "red") +
+  geom_text(data = lrt_data %>% filter(date == lrt_data$date[which.min(lrt_data$ridership)]),
+            aes(x = date, y = ridership, label = round(ridership, 2)),
+            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
+  theme_void()
+
+# ---------------------------
+# Save sparklines as images
+# ---------------------------
+ggsave("mrt_sparkline2.png", plot = mrt_sparkline, width = 8, height = 2, dpi = 300)
+ggsave("bus_sparkline2.png", plot = bus_sparkline, width = 8, height = 2, dpi = 300)
+ggsave("lrt_sparkline2.png", plot = lrt_sparkline, width = 8, height = 2, dpi = 300)
+
+# ---------------------------
+# Prepare and Display the Table with Sparklines
+# ---------------------------
+travel_data <- data.frame(
+  Transport = c("MRT", "Bus", "LRT"),
+  Trend = c("mrt_sparkline2.png", "bus_sparkline2.png", "lrt_sparkline2.png")
+)
+
+travel_table <- gt(travel_data) %>%
+  text_transform(
+    locations = cells_body(columns = "Trend"),
+    fn = function(x) {
+      map(x, ~ paste0("<img src='", ., "' style='width:100%; height:auto;'>"))
+    }
+  ) %>%
+  cols_label(
+    Transport = "Transport Mode",
+    Trend = "Trend (Sparkline)"
+  ) %>%
+  tab_header(title = "Public Transport Trends (Monthly Data)") %>%
+  tab_options(
+    table.width = pct(100),
+    table.align = "center"
+  )
+
+# Display the table
+travel_table
+
+
+```
+
 # Step 3 : Data Analysis
 ## 3.1 Monthly Ridership Analysis
 ```{r}
