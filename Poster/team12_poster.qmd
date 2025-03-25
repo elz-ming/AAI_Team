@@ -40,6 +40,23 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 4. **Increase Data Granularity** - Incorporate monthly or quarterly breakdowns to reveal seasonal patterns.
 5. **Use Appropriate Time Axis** - Place time (years or months) on the x-axis instead of the y-axis to follow standard time series conventions. This improves readability and makes it easier to observe trends and temporal patterns.
 
+# Implementation
+
+- **Data Sources:**
+  - *Monthly Data (2019–2024)*: Contains monthly ridership figures over five years.
+  - *Yearly Data (1990–2023)*: Includes annual ridership statistics spanning 33 years.
+
+- **Data Cleaning – Monthly Data:**
+  - Split the combined `month` column (e.g., "Jan-19") into separate `Month` and `Year` columns for better temporal analysis.
+
+- **Data Cleaning – Yearly Data:**
+  - Transposed the table for improved readability and analysis.
+  - Converted from wide to long format.
+  - Extracted the first row to use as column names and removed it from the data.
+  - Filtered records from 2018 onward to focus on more complete and relevant data.
+  - Reorganized columns by moving the `Year` column to the first position.
+  - Converted ridership and MRT/LRT operational data from thousands to actual values by multiplying relevant columns by 1,000.
+
 
 # Improved Visualization
 ![Improved Visualization](./images/figure_2.png){#fig-2 width=100%}
