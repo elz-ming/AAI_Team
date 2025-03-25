@@ -26,11 +26,11 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 
 # Critical Assessment of the Original Visualization
 
-  1.  **Lack of Contextual Annotatio**-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic.   
+  1.  **Lack of Contextual Annotation**-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic.   
   2. **Minimal Color Differentiation** - MRT, LRT, and bus ridership segments are not distinct enough, making it difficult to differentiate between them.   
   3. **No percentage Change Indicators** - The chart displays raw numbers but lacks insights into year-over-year growth or decline.   
   4. **Limited Data Granularity** - Only annual data is presented, missing seasonal patterns or short-term ridership fluctuations.   
-  5. **Restricted Interactivity** - Users cannot filter data by transport mode or zoom into specific years for deeper analysis.
+  5. **Axis in Time Series** - The original graph places years on the y-axis, which is unconventional for time series data. This reduces readability and makes it harder to identify patterns or trends over time
 
 
 # Suggested Improvement
@@ -38,7 +38,7 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 2. **Improve Color Differentiation** - Use distinct, high-contrast colors for each transport mode to enhance readability.
 3. **Include Percentage Change** - Show year-over-year ridership variations for clearer trend analysis.
 4. **Increase Data Granularity** - Incorporate monthly or quarterly breakdowns to reveal seasonal patterns.
-5. **Enhance Interactivity** - Enable filtering by transport mode and zooming into specific years for detailed insights.
+5. **Use Appropriate Time Axis** - Place time (years or months) on the x-axis instead of the y-axis to follow standard time series conventions. This improves readability and makes it easier to observe trends and temporal patterns.
 
 
 # Improved Visualization
@@ -46,8 +46,26 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 
 
 # Data Analysis
-1. First dip due to first circut breaker (April 2020 to June 2020)
-2. Second dip due to reverted back to phase 2 alert due to Delta variant (May 2021 to July 2021)
+
+**1. Analysis of monthly ridership reveals strong alignment with major real-life events:**
+
+a) **First significant dip** observed in April to June 2020, which aligns with Singapore’s Circuit Breaker period during the initial wave of COVID-19 restrictions.
+
+b) **Second dip** occurs between May to July 2021, corresponding with Singapore reverting to Phase 2 (Heightened Alert) due to the Delta variant outbreak.
+
+These drops are not random but coincide with periods of restricted movement, remote working, and school closures.
+
+**2. Seasonal Effects and Monthly Trends**
+
+June and December has the lowest ridership aligning with school holidays when fewer students commute.Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December).
+
+**3. Year-over-Year Ridership Trends**
+
+Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure.
+
+This suggests lasting lifestyle shifts, such as hybrid work, remote learning, and flexible commuting patterns, have reduced the need for daily travel.Lifestyle changes brought by the pandemic continue to influence public transport usage, even as services recover and expand.
+
+
 
 # Further Improvements
 1. Rachel suggest this.
