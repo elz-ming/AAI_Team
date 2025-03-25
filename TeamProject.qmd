@@ -638,98 +638,66 @@ travel_table
 
 # Step 3 : Data Analysis
 ## 3.1 Monthly Ridership Analysis
-```{r}
-#| eval: true
-#| echo: true
-
-# TODO 4: Data analysis using monhtly data
-
-head(monthly_data)
-
-# Check data structure
-str(monthly_data)
-
-# Summary statistics
-summary(monthly_data)
-
-# Compute Average Monthly Ridership Across Years
-monthly_avg_ridership <- monthly_data %>%
-  group_by(month) %>%
-  summarise(avg_ridership = mean(ridership, na.rm = TRUE))
-
-print(monthly_avg_ridership)
-
-#Compare Monthly Ridership Year Over Year
-monthly_yearly_comparison <- monthly_data %>%
-  group_by(year, month) %>%
-  summarise(total_ridership = sum(ridership, na.rm = TRUE))
-
-print(monthly_yearly_comparison)
-
-# Identify Peak and Low Ridership Months
-peak_months <- monthly_data %>%
-  group_by(month) %>%
-  summarise(avg_ridership = mean(ridership, na.rm = TRUE)) %>%
-  arrange(desc(avg_ridership))
-
-print(peak_months)
-```
 
 ```{r}
-
-# Load necessary library
 library(ggplot2)
+library(dplyr)
+library(scales)  # for comma formatting
 
-# Set calendar order for months
-monthly_avg_ridership$month <- factor(
-  monthly_avg_ridership$month,
-  levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
-             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-)
+# Filter and prepare the data
+compare_all_years <- monthly_data %>%
+  filter(year >= 2019)
 
-# Create a line chart for average ridership per month
-ggplot(monthly_avg_ridership, aes(x = month, y = avg_ridership, group = 1)) +
-  geom_line(color = "black", size = 1.2) + 
-  geom_point(color = "red", size = 3) +
-  labs(title = "Average Monthly Public Transport Ridership",
-       x = "Month",
-       y = "Average Ridership") +
-  theme_minimal()
+compare_all_years$month <- factor(compare_all_years$month,
+                                  levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+
+compare_summary_all <- compare_all_years %>%
+  group_by(year, month) %>%
+  summarise(total_ridership = sum(ridership, na.rm = TRUE), .groups = "drop")
+
+# Plot with y-axis in numeric format
+ggplot(compare_summary_all, aes(x = month, y = total_ridership, color = factor(year), group = year)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  labs(
+    title = "Monthly Public Transport Ridership (2019–2023)",
+    x = "Month",
+    y = "Total Ridership",
+    color = "Year"
+  ) +
+  scale_y_continuous(labels = comma) +  
+  theme_minimal() +
+  theme(
+    text = element_text(size = 12),
+    plot.title = element_text(face = "bold", hjust = 0.5)
+  )
 
 
 ```
+
 
 
 Findings:
 
-1. Seasonal Effects and Monthly Trends
+**1. Analysis of monthly ridership reveals strong alignment with major real-life events:**
 
-- January has the highest ridership (~2,264,133), likely due to the start of the new work and school year.
-- February and March also show high ridership, indicating a stable demand in the first quarter.
-- July and August ridership remains high, possibly due to increased commuting activity post-school holidays.
-- June has the lowest ridership (~1,890,200), aligning with school holidays when fewer students commute.
-- May also shows lower ridership, possibly due to exam periods reducing student travel.
+a) **First significant dip** observed in April to June 2020, which aligns with Singapore’s Circuit Breaker period during the initial wave of COVID-19 restrictions.
 
-Conclusion: Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December) and peaks in January and August.
+b) **Second dip** occurs between May to July 2021, corresponding with Singapore reverting to Phase 2 (Heightened Alert) due to the Delta variant outbreak.
 
----
+These drops are not random but coincide with periods of restricted movement, remote working, and school closures.
 
-2. Year-over-Year Ridership Trends
+**2. Seasonal Effects and Monthly Trends**
 
-- 2020 and 2021 saw a sharp decline in ridership due to COVID-19 lockdowns.
-- Ridership shows recovery in 2022 and 2023, but levels have not fully returned to pre-pandemic figures.
-- January ridership fluctuates the most across years, reflecting economic and policy changes.
+June and December has the lowest ridership aligning with school holidays when fewer students commute.Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December).
 
-Conclusion: The pandemic had a significant impact on ridership, but recovery trends are visible post-2022.
+**3. Year-over-Year Ridership Trends**
 
----
+Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure.
 
-3. Peak and Low Ridership Months
+This suggests lasting lifestyle shifts, such as hybrid work, remote learning, and flexible commuting patterns, have reduced the need for daily travel. Lifestyle changes brought by the pandemic continue to influence public transport usage, even as services recover and expand.
 
-- Peak months: January, March, and September have the highest ridership, suggesting peak travel seasons.
-- Lowest months: June and May show the lowest ridership, correlating with school holiday periods.
-
-Conclusion: Adjustments in MRT and bus frequency during low-demand months (June, December) can optimize public transport efficiency.
 
 
 
