@@ -282,23 +282,23 @@ mrt_sparkline <- ggplot(mrt_data, aes(x = date, y = ridership)) +
   # Annotate the start value
   geom_text(data = mrt_data %>% filter(date == min(date)),
             aes(x = date, y = ridership, label = ridership),
-            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 2, hjust = -0.1, color = "#4D4D4D", size = 4) +
   # Annotate the end value
   geom_text(data = mrt_data %>% filter(date == max(date)),
             aes(x = date, y = ridership, label = ridership),
-            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
+            vjust = 2, hjust = 1.1, color = "#4D4D4D", size = 4) +
   # Add a vertical line and annotate the lowest value
   geom_vline(xintercept = mrt_data$date[which.min(mrt_data$ridership)],
              linetype = "dotted", color = "red") +
   geom_text(data = mrt_data %>% filter(date == mrt_data$date[which.min(mrt_data$ridership)]),
             aes(x = date, y = ridership, label = round(ridership, 2)),
-            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 4) +
   # Add a vertical line and annotate the lowest value in this range
   geom_vline(xintercept = lowest_date_in_range,
              linetype = "dotted", color = "orange") +
   geom_text(data = lowest_in_range,
             aes(x = date, y = ridership, label = round(ridership, 2)),
-            vjust = -2, hjust = 1.1, color = "#4D4D4D", size = 4) +
+            vjust = 1, hjust = 1.1, color = "#4D4D4D", size = 4) +
   # Add Month annotations for specific points
   annotate("text", x = mrt_data$date[which.min(mrt_data$ridership)], y = 0, 
            label = format(mrt_data$date[which.min(mrt_data$ridership)], "%b"), 
@@ -334,21 +334,21 @@ bus_sparkline <- ggplot(bus_data, aes(x = date, y = ridership)) +
              color = "#003838", size = 3) +
   geom_text(data = bus_data %>% filter(date == min(date)),
             aes(x = date, y = ridership, label = ridership),
-            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 2, hjust = -0.1, color = "#4D4D4D", size = 4) +
   geom_text(data = bus_data %>% filter(date == max(date)),
             aes(x = date, y = ridership, label = ridership),
-            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
+            vjust = 2, hjust = 1.1, color = "#4D4D4D", size = 4) +
   geom_vline(xintercept = bus_data$date[which.min(bus_data$ridership)],
              linetype = "dotted", color = "red") +
   geom_text(data = bus_data %>% filter(date == bus_data$date[which.min(bus_data$ridership)]),
             aes(x = date, y = ridership, label = round(ridership, 2)),
-            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 4) +
   # Add a vertical line and annotate the lowest value in this range
   geom_vline(xintercept = lowest_date_in_range,
              linetype = "dotted", color = "orange") +
   geom_text(data = lowest_in_range,
             aes(x = date, y = ridership, label = round(ridership, 2)),
-            vjust = -2, hjust = 1.1, color = "#4D4D4D", size = 4) +
+            vjust = 1, hjust = 1.1, color = "#4D4D4D", size = 4) +
   # Add Month annotations for specific points
   annotate("text", x = bus_data$date[which.min(bus_data$ridership)], y = 0, 
            label = format(bus_data$date[which.min(bus_data$ridership)], "%b"), 
@@ -384,21 +384,21 @@ lrt_sparkline <- ggplot(lrt_data, aes(x = date, y = ridership)) +
              color = "#003838", size = 3) +
   geom_text(data = lrt_data %>% filter(date == min(date)),
             aes(x = date, y = ridership, label = ridership),
-            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 2, hjust = -0.1, color = "#4D4D4D", size = 4) +
   geom_text(data = lrt_data %>% filter(date == max(date)),
             aes(x = date, y = ridership, label = ridership),
-            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
+            vjust = 2, hjust = 1.1, color = "#4D4D4D", size = 4) +
   geom_vline(xintercept = lrt_data$date[which.min(lrt_data$ridership)],
              linetype = "dotted", color = "red") +
   geom_text(data = lrt_data %>% filter(date == lrt_data$date[which.min(lrt_data$ridership)]),
             aes(x = date, y = ridership, label = round(ridership, 2)),
-            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
+            vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 4) +
   # Add a vertical line and annotate the lowest value in this range
   geom_vline(xintercept = lowest_date_in_range,
              linetype = "dotted", color = "orange") +
   geom_text(data = lowest_in_range,
             aes(x = date, y = ridership, label = round(ridership, 2)),
-            vjust = -2, hjust = 1.1, color = "#4D4D4D", size = 4) +
+            vjust = 1, hjust = 1.1, color = "#4D4D4D", size = 4) +
   # Add Month annotations for specific points
   annotate("text", x = lrt_data$date[which.min(lrt_data$ridership)], y = 0, 
            label = format(lrt_data$date[which.min(lrt_data$ridership)], "%b"), 
