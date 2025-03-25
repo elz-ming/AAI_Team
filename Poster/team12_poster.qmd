@@ -50,11 +50,9 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 2. Second dip due to reverted back to phase 2 alert due to Delta variant (May 2021 to July 2021)
 
 # Further Improvements
-1. Rachel suggest this.
-2. Lionel suggest this too.
-3. Shaidah suggest that.
-4. Cholo suggest that too.
-5. Edmund suggest what.
+To further enhance the analysis of public transport trends, incorporating additional data dimensions would be highly beneficial. For example, breaking down MRT data by individual train lines could reveal more detailed usage trends and highlight lines with greater variability, potentially linked to local demographics, major employment areas, or residential zones.
+
+Additionally, integrating age-related data would provide valuable insights into how different age groups adjusted their travel behavior over time—such as whether younger populations returned to public transport more quickly than seniors post-disruption.
 
 # Conclusion
 This is our amazing conclusion.
@@ -63,3 +61,5 @@ This is our amazing conclusion.
 - The Straits Times. (2025). MRT, LRT ridership surpasses pre-COVID-19 levels for first time in 2024. The Straits Times. https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024 
 
 - McKinsey & Company. (2021). Building a transport system that works: Insights from 25 global cities. McKinsey & Company. https://www.mckinsey.com/~/media/mckinsey/business%20functions/operations/our%20insights/building%20a%20transport%20system%20that%20works%20new%20charts%20five%20insights%20from%20our%2025%20city%20report%20new/elements-of-success-urban-transportation-systems-of-25-global-cities-july-2021.pdf 
+
+- The Straits Times. (2022). New Covid-19 rules kick in: Timeline of S'pore's measures over the last 2 years. The Straits Times.https://www.straitstimes.com/singapore/two-years-of-twists-and-turns-a-timeline-of-singapores-covid-19-measures
