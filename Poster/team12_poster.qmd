@@ -5,7 +5,7 @@ format:
     keep-typ: true
     size: "36x24"
     poster-authors: "Tamo Cholo Rafael Tandoc, Chua Zong Han Lionel, Nurul Shaidah, Poh Wen Lin Rachel, Lin Zhenming"
-    departments: "&nbsp;"
+    departments: "Team 12"
     institution-logo: "./images/sit.png"
     footer-text: "AAI1001 --- Data Engineering and Visualization AY24/25 Tri 2 Team Project"
     footer-url: "&nbsp;"
@@ -40,9 +40,24 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 4. **Increase Data Granularity** - Incorporate monthly or quarterly breakdowns to reveal seasonal patterns.
 5. **Use Appropriate Time Axis** - Place time (years or months) on the x-axis instead of the y-axis to follow standard time series conventions. This improves readability and makes it easier to observe trends and temporal patterns.
 
+# Implementation
+
+- **Data Sources:**
+  - *Monthly Data (2019–2024)*: Contains monthly ridership figures over five years.
+  - *Yearly Data (1990–2023)*: Includes annual ridership statistics spanning 33 years.
+
+- **Data Cleaning – Monthly Data:**
+  - Split the combined `month` column (e.g., "Jan-19") into separate `Month` and `Year` columns for better temporal analysis.
+
+- **Data Cleaning – Yearly Data:**
+  - Transposed the table for improved readability and analysis.
+  - Converted from wide to long format.
+  - Filtered records from 2018 onward to focus on more complete and relevant data.
+  - Converted ridership data from thousands to actual values by multiplying relevant columns by 1,000.
+
 
 # Improved Visualization
-![Improved Visualization](./images/figure_2.png){#fig-2 width=100%}
+![Improved Visualization](./images/figure_2.png){#fig-2 width=95%}
 
 
 # Data Analysis
@@ -73,7 +88,7 @@ To further enhance the analysis of public transport trends, incorporating additi
 Additionally, integrating age-related data would provide valuable insights into how different age groups adjusted their travel behavior over time—such as whether younger populations returned to public transport more quickly than seniors post-disruption.
 
 # Conclusion
-This is our amazing conclusion.
+The sparkline can effectively communicate the trend of a bivariate time series data (ridership across multiple transport mode in our case). Users can compare the similarity (or differences) of trends across the multiple categories, as well as visualize common anomality that affects all categories.
 
 # References
 - The Straits Times. (2025). MRT, LRT ridership surpasses pre-COVID-19 levels for first time in 2024. The Straits Times. https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024 
