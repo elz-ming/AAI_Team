@@ -114,6 +114,8 @@ If your code execution output is an interactive plot using, e.g., `plotly` or `s
 2.  prepare an HTML live demo of the interactive plot to be presented during the poster session.
 
 # Data Analysis
+1. First dip due to first circut breaker (April 2020 to June 2020)
+2. Second dip due to reverted back to phase 2 alert due to Delta variant (May 2021 to July 2021)
 # References
 - The Straits Times. (2025). MRT, LRT ridership surpasses pre-COVID-19 levels for first time in 2024. The Straits Times. https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024 
 
