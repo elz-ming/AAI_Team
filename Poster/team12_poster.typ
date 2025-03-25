@@ -23,10 +23,10 @@
 
 // Some quarto-specific definitions.
 
-#show raw.where(block: true): block.with(
-    fill: luma(230), 
-    width: 100%, 
-    inset: 8pt, 
+#show raw.where(block: true): set block(
+    fill: luma(230),
+    width: 100%,
+    inset: 8pt,
     radius: 2pt
   )
 
@@ -142,7 +142,7 @@
       new_title))
 
   block_with_new_content(old_callout,
-    new_title_block +
+    block(below: 0pt, new_title_block) +
     old_callout.body.children.at(1))
 }
 
@@ -361,6 +361,7 @@
   // Display the poster's contents.
   body
 }
+
 // Typst custom formats typically consist of a 'typst-template.typ' (which is
 // the source code for a typst template) and a 'typst-show.typ' which calls the
 // template's function (forwarding Pandoc metadata values as required)
@@ -436,7 +437,6 @@
   doc,
 )
 
-
 = Introduction
 <introduction>
 Public transport is essential for urban mobility in Singapore, serving millions daily. Understanding ridership trends is crucial for urban planning and policy making. Current visualizations highlight broad trends but lack context, interactivity, and data granularity. This project aims to enhance an existing ridership visualization by incorporating better color differentiation, trend indicators, and interactive elements to provide deeper insights into usage patterns.
@@ -446,7 +446,7 @@ Public transport is essential for urban mobility in Singapore, serving millions 
 A stacked bar chart published by The Straits Times (2025) presents annual ridership trends for MRT, LRT, and buses. While effectively conveys general trends, it lacks annotations, detailed breakdowns, and interactive features, making it harder to analyze fluctuations in riderships.
 
 #figure([
-#box(image("./images/figure_1.png"))
+#box(image("./images/figure_1.png", width: 120%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -460,10 +460,10 @@ supplement: "Figure",
 
 = Critical Assessment of the Original Visualization
 <critical-assessment-of-the-original-visualization>
-+ #strong[Lack of Contextual Annotatio];-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic.
-+ #strong[Minimal Color Differentiation] - MRT, LRT, and bus ridership segments are not distinct enough, making it difficult to differentiate between them.
-+ #strong[No percentage Change Indicators] - The chart displays raw numbers but lacks insights into year-over-year growth or decline.
-+ #strong[Limited Data Granularity] - Only annual data is presented, missing seasonal patterns or short-term ridership fluctuations.
++ #strong[Lack of Contextual Annotatio];-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic. \
++ #strong[Minimal Color Differentiation] - MRT, LRT, and bus ridership segments are not distinct enough, making it difficult to differentiate between them. \
++ #strong[No percentage Change Indicators] - The chart displays raw numbers but lacks insights into year-over-year growth or decline. \
++ #strong[Limited Data Granularity] - Only annual data is presented, missing seasonal patterns or short-term ridership fluctuations. \
 + #strong[Restricted Interactivity] - Users cannot filter data by transport mode or zoom into specific years for deeper analysis.
 
 = Suggested Improvement
@@ -474,109 +474,40 @@ supplement: "Figure",
 + #strong[Increase Data Granularity] - Incorporate monthly or quarterly breakdowns to reveal seasonal patterns.
 + #strong[Enhance Interactivity] - Enable filtering by transport mode and zooming into specific years for detailed insights.
 
-== YAML Header Configuration
-<yaml-header-configuration>
-The default YAML header in `typst_poster.qmd` is suggested to be modified as follows:
-
-```
----
-title: Your Team Project Title
-format:
-  poster-typst: 
-    keep-typ: true
-    size: "36x24"
-    poster-authors: "G. Hua and M. Gastner"
-    departments: "&nbsp;"
-    institution-logo: "./images/sit.png"
-    footer-text: "AAI1001 AY24/25 Tri 2 Team Project"
-    footer-url: "&nbsp;"
-    footer-emails: "Team XX"
-    footer-color: "ebcfb2"
----
-```
-
-Please take note the following in the above setting:
-
-- `size`: The default landscape layout "36x24" is good to be displayed on a monitor.
-- `title`: Replace `Your Team Project Title` with your actual project title.
-- `poster-authors`: Follow the abbreviation pattern to save space.
-- `&nbsp;`: HTML space to remove the unnecessary `departments` and `footer-url`.
-- `institution-logo`: You can download the logo `sit.png` from #link("https://xsite.singaporetech.edu.sg/content/enforced/132775-SIT-2330-AAI1001/sit.png")[xSITe];.
-- `footer-emails`: Replace `Team 12` with your actual team number.
-- `footer-color:` You can use your preferred hexadecimal color code, e.g., the "SIT red".
-
-To remove the empty "`()`" in the placeholder for `departments` next to author names, go to Lines 171–172 in `typst-template.typ` and change it to the following: \
-`text(authors_font_size, emph(authors) + departments),`
-
-== Format Configuration
-<format-configuration>
-The default poster template `typst-template.typ` provides a good starting point to work on. However, you may want to customize the poster to better format your team project. This can be achieved by modifying the `typst-template.typ` file. Here are a few suggestions:
-
-- #strong[Adjust footer font size] — In `typst-template.typ` Line 64, you can adjust the footer font size to, say 24pt, by setting \
-  `footer_text_font_size: "24"`
-
-- #strong[Adjust main text font size] — In `typst-template.typ` Line 70, you can adjust the main text font size to, say, 20pt, by setting \
-  `set text(font: "STIX Two Text", size: 20pt)` \
-  After completing your poster content, you can adjust the main text font size to optimize the overall layout, e.g., ensuring the last sentence lies at the very right bottom of the poster.
-
-- #strong[Adjust poster margins] — In `typst-template.typ` Line 89, you can change the margin values ~ `(top: 1in, left: 2in, right: 2in, bottom: 2in),`
-
-- You are encouraged to further explore/modify `typst-template.typ` to improve formatting.
-
 = Improved Visualization
 <improved-visualization>
-== Static Plots
-<static-plots>
-Unfortunately, current `typst` does not support code execution output in posters. To include code execution output in your poster, the suggested walk-around is:
-
-+ Render a separate HTML file and save the output as a PNG image.
-+ Include image, e.g., `output.png`, in the poster using the `Quarto` command \
-  `![title](output.png){#fig-label width="100%" fig-align="center"}`
-
-See @fig-3 as an example rendered by the following command: \
-`![Iris Petal Dimension.](./images/output.png){#fig-3 width="64%" fig-align="center"}`
-
 #figure([
-#box(width: 64%,image("./images/output.png"))
+#box(image("./images/figure_2.png", width: 100%))
 ], caption: figure.caption(
 position: bottom, 
 [
-Iris petal dimension.
+Improved Visualization
 ]), 
 kind: "quarto-float-fig", 
 supplement: "Figure", 
 )
-<fig-3>
+<fig-2>
 
-
-== Interactive Plots
-<interactive-plots>
-If your code execution output is an interactive plot using, e.g., `plotly` or `shiny`, having e.g., hover effects, zoom effects, drop-down menus, sliders, etc., it is suggested that you
-
-+ save a static version of the plot as PNG and include it in the poster.
-+ prepare an HTML live demo of the interactive plot to be presented during the poster session.
 
 = Data Analysis
 <data-analysis>
++ First dip due to first circut breaker (April 2020 to June 2020)
++ Second dip due to reverted back to phase 2 alert due to Delta variant (May 2021 to July 2021)
+
+= Further Improvements
+<further-improvements>
++ Rachel suggest this.
++ Lionel suggest this too.
++ Shaidah suggest that.
++ Cholo suggest that too.
++ Edmund suggest what.
+
+= Conclusion
+<conclusion>
+This is our amazing conclusion.
+
 = References
 <references>
 - The Straits Times. (2025). MRT, LRT ridership surpasses pre-COVID-19 levels for first time in 2024. The Straits Times. https:\/\/www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024
 
 - McKinsey & Company. (2021). Building a transport system that works: Insights from 25 global cities. McKinsey & Company. https:\/\/www.mckinsey.com/\~/media/mckinsey/business%20functions/operations/our%20insights/building%20a%20transport%20system%20that%20works%20new%20charts%20five%20insights%20from%20our%2025%20city%20report%20new/elements-of-success-urban-transportation-systems-of-25-global-cities-july-2021.pdf
-
-#block[
-#heading(
-level: 
-1
-, 
-numbering: 
-none
-, 
-[
-Further Reading
-]
-)
-]
-+ `Quarto` `typst` basics (#link("https://quarto.org/docs/output-formats/typst.html")[link];).
-+ `Quarto` `typst` custom format (#link("https://quarto.org/docs/output-formats/typst-custom.html")[link];).
-+ `typst` online editor and compiler: #link("https://typst.app/");, which compiles `.typ` to PDF.

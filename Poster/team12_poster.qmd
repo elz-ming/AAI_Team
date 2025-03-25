@@ -22,19 +22,18 @@ Public transport is essential for urban mobility in Singapore, serving millions 
 A stacked bar chart published by The Straits Times (2025) presents annual ridership trends for MRT, LRT, and buses. While effectively conveys general trends, it lacks annotations, detailed breakdowns, and interactive features, making it harder to analyze fluctuations in riderships.
 
 ![[ Original Visualization from the Straits Times (2025)
-.](https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024)](./images/figure_1.png){#fig-1}
+.](https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024)](./images/figure_1.png){#fig-1 width=120%}
 
 # Critical Assessment of the Original Visualization
 
-  1.  **Lack of Contextual Annotatio**-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic.
-  2. **Minimal Color Differentiation** - MRT, LRT, and bus ridership segments are not distinct enough, making it difficult to differentiate between them.
-  3. **No percentage Change Indicators** - The chart displays raw numbers but lacks insights into year-over-year growth or decline.
-  4. **Limited Data Granularity** - Only annual data is presented, missing seasonal patterns or short-term ridership fluctuations.
+  1.  **Lack of Contextual Annotatio**-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic.   
+  2. **Minimal Color Differentiation** - MRT, LRT, and bus ridership segments are not distinct enough, making it difficult to differentiate between them.   
+  3. **No percentage Change Indicators** - The chart displays raw numbers but lacks insights into year-over-year growth or decline.   
+  4. **Limited Data Granularity** - Only annual data is presented, missing seasonal patterns or short-term ridership fluctuations.   
   5. **Restricted Interactivity** - Users cannot filter data by transport mode or zoom into specific years for deeper analysis.
 
 
 # Suggested Improvement
-
 1. **Add Contextual Annotations** - Highlight key events impact,(e.g., COVID-19 impact, fare adjustments) to explain ridership shifts.
 2. **Improve Color Differentiation** - Use distinct, high-contrast colors for each transport mode to enhance readability.
 3. **Include Percentage Change** - Show year-over-year ridership variations for clearer trend analysis.
@@ -42,87 +41,25 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 5. **Enhance Interactivity** - Enable filtering by transport mode and zooming into specific years for detailed insights.
 
 
-## YAML Header Configuration
-
-The default YAML header in `typst_poster.qmd` is suggested to be modified as follows:
-
-```
----
-title: Your Team Project Title
-format:
-  poster-typst: 
-    keep-typ: true
-    size: "36x24"
-    poster-authors: "G. Hua and M. Gastner"
-    departments: "&nbsp;"
-    institution-logo: "./images/sit.png"
-    footer-text: "AAI1001 AY24/25 Tri 2 Team Project"
-    footer-url: "&nbsp;"
-    footer-emails: "Team XX"
-    footer-color: "ebcfb2"
----
-```
-
-Please take note the following in the above setting:
-
--   `size`: The default landscape layout "36x24" is good to be displayed on a monitor.
--   `title`: Replace `Your Team Project Title` with your actual project title. 
--   `poster-authors`: Follow the abbreviation pattern to save space.
--   `&nbsp;`: HTML space to remove the unnecessary `departments` and `footer-url`.
--   `institution-logo`: You can download the logo `sit.png` from [xSITe](https://xsite.singaporetech.edu.sg/content/enforced/132775-SIT-2330-AAI1001/sit.png).
--   `footer-emails`: Replace `Team 12` with your actual team number.
--   `footer-color:` You can use your preferred hexadecimal color code, e.g., the "SIT red".
-
-To remove the empty "`()`" in the placeholder for `departments` next to author names, go to Lines 171--172 in `typst-template.typ` and change it to the following:\
-`text(authors_font_size, emph(authors) + departments),`
-
-## Format Configuration
-
-The default poster template `typst-template.typ` provides a good starting point to work on. However, you may want to customize the poster to better format your team project. This can be achieved by modifying the `typst-template.typ` file. Here are a few suggestions:
-
--   **Adjust footer font size** --- In `typst-template.typ` Line 64, you can adjust the footer font size to, say 24pt, by setting\
-`footer_text_font_size: "24"`
-
--   **Adjust main text font size** --- In `typst-template.typ` Line 70, you can adjust the main text font size to, say, 20pt, by setting\
-    `set text(font: "STIX Two Text", size: 20pt)`\
-    After completing your poster content, you can adjust the main text font size to optimize the overall layout, e.g., ensuring the last sentence lies at the very right bottom of the poster.
-
--   **Adjust poster margins** --- In `typst-template.typ` Line 89, you can change the margin values \ 
-    `(top: 1in, left: 2in, right: 2in, bottom: 2in),`
-
--   You are encouraged to further explore/modify `typst-template.typ` to improve formatting.
-
-
 # Improved Visualization
+![Improved Visualization](./images/figure_2.png){#fig-2 width=100%}
 
-## Static Plots
-Unfortunately, current `typst` does not support code execution output in posters. To include code execution output in your poster, the suggested walk-around is:
-
-1.  Render a separate HTML file and save the output as a PNG image.
-2.  Include image, e.g., `output.png`, in the poster using the `Quarto` command\
-    `![title](output.png){#fig-label width="100%" fig-align="center"}`
-
-See @fig-3 as an example rendered by the following command:\
-`![Iris Petal Dimension.](./images/output.png){#fig-3 width="64%" fig-align="center"}`
-    
-![Iris petal dimension.](./images/output.png){#fig-3 width="64%" fig-align="center"}
-
-## Interactive Plots
-If your code execution output is an interactive plot using, e.g., `plotly` or `shiny`, having e.g., hover effects, zoom effects, drop-down menus, sliders, etc., it is suggested that you
-
-1.  save a static version of the plot as PNG and include it in the poster.
-2.  prepare an HTML live demo of the interactive plot to be presented during the poster session.
 
 # Data Analysis
 1. First dip due to first circut breaker (April 2020 to June 2020)
 2. Second dip due to reverted back to phase 2 alert due to Delta variant (May 2021 to July 2021)
+
+# Further Improvements
+1. Rachel suggest this.
+2. Lionel suggest this too.
+3. Shaidah suggest that.
+4. Cholo suggest that too.
+5. Edmund suggest what.
+
+# Conclusion
+This is our amazing conclusion.
+
 # References
 - The Straits Times. (2025). MRT, LRT ridership surpasses pre-COVID-19 levels for first time in 2024. The Straits Times. https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024 
 
 - McKinsey & Company. (2021). Building a transport system that works: Insights from 25 global cities. McKinsey & Company. https://www.mckinsey.com/~/media/mckinsey/business%20functions/operations/our%20insights/building%20a%20transport%20system%20that%20works%20new%20charts%20five%20insights%20from%20our%2025%20city%20report%20new/elements-of-success-urban-transportation-systems-of-25-global-cities-july-2021.pdf 
-
-# Further Reading {.unnumbered}
-
-1.  `Quarto` `typst` basics ([link](https://quarto.org/docs/output-formats/typst.html)).
-2.  `Quarto` `typst` custom format ([link](https://quarto.org/docs/output-formats/typst-custom.html)).
-3.  `typst` online editor and compiler: <https://typst.app/>, which compiles `.typ` to PDF.
