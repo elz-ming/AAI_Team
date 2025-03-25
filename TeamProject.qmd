@@ -254,272 +254,6 @@ kable(head(yearly_data))
 
 ## 2.2 Improved Visualization
 ```{r}
-#| eval: true
-#| echo: true
-#| message: false
-#| warning: false
-
-# Create a sparkline with a dotted vertical line at the lowest value
-sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - MRT`)) +
-  geom_line(color = "blue", size = 1) +
-  geom_point(color = "red", size = 2) +
-  geom_text(aes(label = ifelse(Year == min(Year), 
-                               paste(`Average Daily Ridership - MRT`), 
-                               ifelse(Year == max(Year), 
-                                      paste(`Average Daily Ridership - MRT`), 
-                                      ""))),
-            vjust = -1, color = "black", size = 4) +
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - MRT`)],
-             linetype = "solid", color = "red") + # Add dotted line at lowest value
-  geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - MRT`)], 
-                y = min(yearly_data$`Average Daily Ridership - MRT`), 
-                label = paste(round(min(yearly_data$`Average Daily Ridership - MRT`), 2))),
-            vjust = -1, hjust = 0.5, color = "black", size = 4) + # Annotate the lowest value
-  theme_minimal() +
-  labs(title = "Sparkline: MRT Average Daily Ridership per Year",
-       x = "Year",
-       y = "Ridership") +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 12),
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks = element_blank(),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
-
-# Display the sparkline
-sparkline
-```
-
-## 2.3 Improved Visualization Yearly
-```{r}
-#| eval: true
-#| echo: true
-#| message: false
-#| warning: false
-# Create sparklines for MRT, Bus, and LRT with start, end, and lowest point values
-mrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - MRT`)) +
-  geom_line(color = "#008b8b", size = 1) +
-  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
-             aes(x = Year, y = `Average Daily Ridership - MRT`),
-             color = "#003838", size = 3) +
-
-  # Annotate the start value
-  geom_text(aes(x = min(Year), 
-                y = yearly_data$`Average Daily Ridership - MRT`[which.min(Year)], 
-                label = paste(yearly_data$`Average Daily Ridership - MRT`[which.min(Year)])),
-            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  # Annotate the end value
-  geom_text(aes(x = max(Year), 
-                y = yearly_data$`Average Daily Ridership - MRT`[which.max(Year)], 
-                label = paste(yearly_data$`Average Daily Ridership - MRT`[which.max(Year)])),
-            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
-  # Add a vertical line and annotate the lowest value
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - MRT`)],
-             linetype = "dotted", color = "red") +
-  geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - MRT`)],
-                y = min(yearly_data$`Average Daily Ridership - MRT`),
-                label = paste(round(min(yearly_data$`Average Daily Ridership - MRT`), 2))),
-            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  theme_void()
-
-# Similarly update sparklines for Bus and LRT
-bus_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - Public Bus`)) +
-  geom_line(color = "#008b8b", size = 1) +
-  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
-             aes(x = Year, y = `Average Daily Ridership - Public Bus`),
-             color = "#003838", size = 3) +
-  geom_text(aes(x = min(Year), 
-                y = yearly_data$`Average Daily Ridership - Public Bus`[which.min(Year)], 
-                label = paste(yearly_data$`Average Daily Ridership - Public Bus`[which.min(Year)])),
-            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  geom_text(aes(x = max(Year), 
-                y = yearly_data$`Average Daily Ridership - Public Bus`[which.max(Year)], 
-                label = paste(yearly_data$`Average Daily Ridership - Public Bus`[which.max(Year)])),
-            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - Public Bus`)],
-             linetype = "dotted", color = "red") +
-  geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - Public Bus`)],
-                y = min(yearly_data$`Average Daily Ridership - Public Bus`),
-                label = paste(round(min(yearly_data$`Average Daily Ridership - Public Bus`), 2))),
-            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  theme_void()
-
-lrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - LRT`)) +
-  geom_line(color = "#008b8b", size = 1) +
-  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
-             aes(x = Year, y = `Average Daily Ridership - LRT`),
-             color = "#003838", size = 3) +
-  geom_text(aes(x = min(Year), 
-                y = yearly_data$`Average Daily Ridership - LRT`[which.min(Year)], 
-                label = paste(yearly_data$`Average Daily Ridership - LRT`[which.min(Year)])),
-            vjust = 1.5, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  geom_text(aes(x = max(Year), 
-                y = yearly_data$`Average Daily Ridership - LRT`[which.max(Year)], 
-                label = paste(yearly_data$`Average Daily Ridership - LRT`[which.max(Year)])),
-            vjust = -1, hjust = 1.1, color = "#4D4D4D", size = 4) +
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - LRT`)],
-             linetype = "dotted", color = "red") +
-  geom_text(aes(x = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - LRT`)],
-                y = min(yearly_data$`Average Daily Ridership - LRT`),
-                label = paste(round(min(yearly_data$`Average Daily Ridership - LRT`), 2))),
-            vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  theme_void()
-
-# Save sparklines as images
-ggsave("mrt_sparkline.png", plot = mrt_sparkline, width = 8, height = 2, dpi = 300)
-ggsave("bus_sparkline.png", plot = bus_sparkline, width = 8, height = 2, dpi = 300)
-ggsave("lrt_sparkline.png", plot = lrt_sparkline, width = 8, height = 2, dpi = 300)
-
-# Prepare data for the table
-travel_data <- data.frame(
-  Transport = c("MRT", "Bus", "LRT"),
-  Trend = c("mrt_sparkline.png", "bus_sparkline.png", "lrt_sparkline.png")
-)
-
-# Create a table with properly scaled sparklines
-travel_table <- gt(travel_data) |>
-  text_transform(
-    locations = cells_body(columns = "Trend"),
-    fn = function(x) {
-      map(x, ~ paste0("<img src='", ., "' style='width:100%; height:auto;'>")) # Scale to full width
-    }
-  ) |>
-  cols_label(
-    Transport = "Transport Mode",
-    Trend = "Trend (Sparkline)"
-  ) |>
-  tab_header(title = "Public Transport Trends") |>
-  tab_options(
-    table.width = pct(100),  # Ensure table takes full width of the page
-    table.align = "center"
-  )
-
-# Display the table
-travel_table
-```
-
-```{r}
-# Overlay sparklines for MRT, Bus, and LRT
-overlay_sparklines <- ggplot() +
-  # MRT
-  geom_line(data = yearly_data, aes(x = Year, y = `Average Daily Ridership - MRT`),
-            color = "#008b8b", alpha = 0.7, size = 1) + # Slight transparency
-  # Bus
-  geom_line(data = yearly_data, aes(x = Year, y = `Average Daily Ridership - Public Bus`),
-            color = "#FFA07A", alpha = 0.7, size = 1) + # Slight transparency with salmon color
-  # LRT
-  geom_line(data = yearly_data, aes(x = Year, y = `Average Daily Ridership - LRT`),
-            color = "#6A5ACD", alpha = 0.7, size = 1) + # Slight transparency with slate blue color
-  # Add labels and aesthetics
-  theme_minimal() +
-  labs(title = "Overlay of Public Transport Trends",
-       x = "Year",
-       y = "Average Daily Ridership") +
-  theme(plot.title = element_text(hjust = 0.5, size = 14))
-
-
-# Display the overlay sparklines
-overlay_sparklines
-```
-
-```{r}
-# Add scaled columns for MRT, Bus, and LRT (because plotting them all on the same graph hides the trends of smaller values)
-yearly_data <- yearly_data %>%
-  mutate(
-    MRT_scaled = (`Average Daily Ridership - MRT` - min(`Average Daily Ridership - MRT`)) /
-                 (max(`Average Daily Ridership - MRT`) - min(`Average Daily Ridership - MRT`)),
-    Bus_scaled = (`Average Daily Ridership - Public Bus` - min(`Average Daily Ridership - Public Bus`)) /
-                 (max(`Average Daily Ridership - Public Bus`) - min(`Average Daily Ridership - Public Bus`)),
-    LRT_scaled = (`Average Daily Ridership - LRT` - min(`Average Daily Ridership - LRT`)) /
-                 (max(`Average Daily Ridership - LRT`) - min(`Average Daily Ridership - LRT`))
-  )
-
-overlay_sparklines_scaled <- ggplot(yearly_data, aes(x = Year)) +
-  geom_line(aes(y = MRT_scaled, color = "MRT"), size = 1, alpha = 0.8) +
-  geom_line(aes(y = Bus_scaled, color = "Bus"), size = 1, alpha = 0.8) +
-  geom_line(aes(y = LRT_scaled, color = "LRT"), size = 1, alpha = 0.8) +
-  scale_color_manual(values = c("MRT" = "#008b8b", "Bus" = "#FFA07A", "LRT" = "#6A5ACD")) +
-  labs(title = "Normalized Public Transport Trends",
-       x = "Year",
-       y = "Normalized Ridership",
-       color = "Transport Mode") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5, size = 14))
-
-overlay_sparklines_scaled
-```
-
-```{r}
-library(magick)
-
-# Create sparklines for MRT, Bus, and LRT with start, end, and lowest point values
-mrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - MRT`)) +
-  geom_line(color = "#2d3333", size = 1) +
-  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
-             aes(x = Year, y = `Average Daily Ridership - MRT`),
-             color = "#003838", size = 3) +
-  # Add a vertical line and annotate the lowest value
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - MRT`)],
-             linetype = "dotted", color = "red") +
-  # indicate this line belongs to mrt
-  geom_text(data = yearly_data |> filter(Year == min(Year)),
-            aes(x = Year, y = `Average Daily Ridership - MRT`, label = "MRT"),
-            vjust = 4, hjust = -0.1, color = "#2d3333", size = 4) +
-  theme_void()
-
-# Similarly update sparklines for Bus and LRT
-bus_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - Public Bus`)) +
-  geom_line(color = "#708080", size = 1) +
-  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
-             aes(x = Year, y = `Average Daily Ridership - Public Bus`),
-             color = "#003838", size = 3) +
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - Public Bus`)],
-             linetype = "dotted", color = "red") +
-  # indicate this line belongs to bus
-  geom_text(data = yearly_data |> filter(Year == min(Year)),
-            aes(x = Year, y = `Average Daily Ridership - Public Bus`, label = "Bus"),
-            vjust = 3, hjust = -0.1, color = "#708080", size = 4) +
-    theme_void()
-
-lrt_sparkline <- ggplot(yearly_data, aes(x = Year, y = `Average Daily Ridership - LRT`)) +
-  geom_line(color = "#b3cccc", size = 1) +
-  geom_point(data = yearly_data |> filter(Year == min(Year) | Year == max(Year)),
-             aes(x = Year, y = `Average Daily Ridership - LRT`),
-             color = "#003838", size = 3) +
-  geom_vline(xintercept = yearly_data$Year[which.min(yearly_data$`Average Daily Ridership - LRT`)],
-             linetype = "dotted", color = "red") +
-  # indicate this line belongs to lrt
-  geom_text(data = yearly_data |> filter(Year == min(Year)),
-            aes(x = Year, y = `Average Daily Ridership - LRT`, label = "LRT"),
-            vjust = 4, hjust = -0.1, color = "#b3cccc", size = 4) +
-    theme_void()
-
-# Save sparklines as images
-ggsave("mrt_sparkline_forcomb.png", plot = mrt_sparkline, width = 8, height = 2, dpi = 300)
-ggsave("bus_sparkline_forcomb.png", plot = bus_sparkline, width = 8, height = 2, dpi = 300)
-ggsave("lrt_sparkline_forcomb.png", plot = lrt_sparkline, width = 8, height = 2, dpi = 300)
-
-# Read images
-mrt_img <- image_read("mrt_sparkline_forcomb.png")
-bus_img <- image_read("bus_sparkline_forcomb.png")
-lrt_img <- image_read("lrt_sparkline_forcomb.png")
-
-# Combine the images
-combined_img <- image_composite(image_composite(mrt_img, bus_img, operator = "over"),
-                                 lrt_img, operator = "over")
-
-# Save the final overlay image
-image_write(combined_img, path = "overlay_sparklines_combined.png", format = "png")
-
-# Display the final overlay image
-combined_img
-```
-
-```{r}
 
 # Create a date column from the month and year columns (assuming month is abbreviated, e.g. "Jan")
 monthly_data <- monthly_data %>%
@@ -531,8 +265,17 @@ monthly_data <- monthly_data %>%
 monthly_data <- monthly_data %>% filter(!is.na(date))
 mrt_data <- monthly_data %>% filter(mode == "MRT")
 
+# Filter data for the range between 2021 and 2022
+filtered_data <- mrt_data %>% filter(date >= as.Date("2021-01-01") & date <= as.Date("2022-12-31"))
+
+# Find the lowest ridership within this filtered range
+lowest_in_range <- filtered_data %>% filter(ridership == min(ridership))
+
+# Extract the date of this lowest ridership
+lowest_date_in_range <- lowest_in_range$date
+
 mrt_sparkline <- ggplot(mrt_data, aes(x = date, y = ridership)) +
-  geom_line(color = "#008b8b", size = 1) +
+  geom_line(color = "#008b8b", linewidth = 1) +
   geom_point(data = mrt_data %>% filter(date == min(date) | date == max(date)),
              aes(x = date, y = ridership),
              color = "#003838", size = 3) +
@@ -550,15 +293,42 @@ mrt_sparkline <- ggplot(mrt_data, aes(x = date, y = ridership)) +
   geom_text(data = mrt_data %>% filter(date == mrt_data$date[which.min(mrt_data$ridership)]),
             aes(x = date, y = ridership, label = round(ridership, 2)),
             vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  theme_void()
+  # Add a vertical line and annotate the lowest value in this range
+  geom_vline(xintercept = lowest_date_in_range,
+             linetype = "dotted", color = "orange") +
+  geom_text(data = lowest_in_range,
+            aes(x = date, y = ridership, label = round(ridership, 2)),
+            vjust = -2, hjust = 1.1, color = "#4D4D4D", size = 4) +
+  # Add Month annotations for specific points
+  annotate("text", x = mrt_data$date[which.min(mrt_data$ridership)], y = 0, 
+           label = format(mrt_data$date[which.min(mrt_data$ridership)], "%b"), 
+           hjust = 0.5, vjust = 2.6, color = "#4D4D4D", size = 3) +
+  annotate("text", x = lowest_date_in_range, y = 0, 
+           label = format(lowest_date_in_range, "%b"), 
+           hjust = 0.5, vjust = 2.6, color = "#4D4D4D", size = 3) +
+  labs(x = "", y = "") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(axis.text.y = element_text(angle = 45, hjust = 1)) +
+  coord_cartesian(clip = "off")
 
 # ---------------------------
 # Bus Sparkline using Monthly Data
 # ---------------------------
 bus_data <- monthly_data %>% filter(mode == "Public Bus")
 
+# Filter data for the range between 2021 and 2022
+filtered_data <- bus_data %>% filter(date >= as.Date("2021-01-01") & date <= as.Date("2022-12-31"))
+
+# Find the lowest ridership within this filtered range
+lowest_in_range <- filtered_data %>% filter(ridership == min(ridership))
+
+# Extract the date of this lowest ridership
+lowest_date_in_range <- lowest_in_range$date
+
 bus_sparkline <- ggplot(bus_data, aes(x = date, y = ridership)) +
-  geom_line(color = "#008b8b", size = 1) +
+  geom_line(color = "#008b8b", linewidth = 1) +
   geom_point(data = bus_data %>% filter(date == min(date) | date == max(date)),
              aes(x = date, y = ridership),
              color = "#003838", size = 3) +
@@ -573,15 +343,42 @@ bus_sparkline <- ggplot(bus_data, aes(x = date, y = ridership)) +
   geom_text(data = bus_data %>% filter(date == bus_data$date[which.min(bus_data$ridership)]),
             aes(x = date, y = ridership, label = round(ridership, 2)),
             vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  theme_void()
+  # Add a vertical line and annotate the lowest value in this range
+  geom_vline(xintercept = lowest_date_in_range,
+             linetype = "dotted", color = "orange") +
+  geom_text(data = lowest_in_range,
+            aes(x = date, y = ridership, label = round(ridership, 2)),
+            vjust = -2, hjust = 1.1, color = "#4D4D4D", size = 4) +
+  # Add Month annotations for specific points
+  annotate("text", x = bus_data$date[which.min(bus_data$ridership)], y = 0, 
+           label = format(bus_data$date[which.min(bus_data$ridership)], "%b"), 
+           hjust = 0.5, vjust = 2.6, color = "#4D4D4D", size = 3) +
+  annotate("text", x = lowest_date_in_range, y = 0, 
+           label = format(lowest_date_in_range, "%b"), 
+           hjust = 0.5, vjust = 2.6, color = "#4D4D4D", size = 3) +
+  labs(x = "", y = "") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(axis.text.y = element_text(angle = 45, hjust = 1))+
+  coord_cartesian(clip = "off")
 
 # ---------------------------
 # LRT Sparkline using Monthly Data
 # ---------------------------
 lrt_data <- monthly_data %>% filter(mode == "LRT")
 
+# Filter data for the range between 2021 and 2022
+filtered_data <- lrt_data %>% filter(date >= as.Date("2021-01-01") & date <= as.Date("2022-12-31"))
+
+# Find the lowest ridership within this filtered range
+lowest_in_range <- filtered_data %>% filter(ridership == min(ridership))
+
+# Extract the date of this lowest ridership
+lowest_date_in_range <- lowest_in_range$date
+
 lrt_sparkline <- ggplot(lrt_data, aes(x = date, y = ridership)) +
-  geom_line(color = "#008b8b", size = 1) +
+  geom_line(color = "#008b8b", linewidth = 1) +
   geom_point(data = lrt_data %>% filter(date == min(date) | date == max(date)),
              aes(x = date, y = ridership),
              color = "#003838", size = 3) +
@@ -596,7 +393,25 @@ lrt_sparkline <- ggplot(lrt_data, aes(x = date, y = ridership)) +
   geom_text(data = lrt_data %>% filter(date == lrt_data$date[which.min(lrt_data$ridership)]),
             aes(x = date, y = ridership, label = round(ridership, 2)),
             vjust = -2, hjust = -0.1, color = "#4D4D4D", size = 4) +
-  theme_void()
+  # Add a vertical line and annotate the lowest value in this range
+  geom_vline(xintercept = lowest_date_in_range,
+             linetype = "dotted", color = "orange") +
+  geom_text(data = lowest_in_range,
+            aes(x = date, y = ridership, label = round(ridership, 2)),
+            vjust = -2, hjust = 1.1, color = "#4D4D4D", size = 4) +
+  # Add Month annotations for specific points
+  annotate("text", x = lrt_data$date[which.min(lrt_data$ridership)], y = 0, 
+           label = format(lrt_data$date[which.min(lrt_data$ridership)], "%b"), 
+           hjust = 0.5, vjust = 2.6, color = "#4D4D4D", size = 3) +
+  annotate("text", x = lowest_date_in_range, y = 0, 
+           label = format(lowest_date_in_range, "%b"), 
+           hjust = 0.5, vjust = 2.6, color = "#4D4D4D", size = 3) +
+  labs(x = "", y = "") +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_minimal() +
+  theme(axis.text.y = element_text(angle = 45, hjust = 1, margin = margin(r = 8))) +
+  coord_cartesian(clip = "off")
 
 # ---------------------------
 # Save sparklines as images
@@ -632,8 +447,6 @@ travel_table <- gt(travel_data) %>%
 
 # Display the table
 travel_table
-
-
 ```
 
 # Step 3 : Data Analysis
