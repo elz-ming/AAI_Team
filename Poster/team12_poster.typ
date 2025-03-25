@@ -380,7 +380,7 @@
    title: [Visualizing Trends in Public Transport Ridership in Singapore], 
   // TODO: use Quarto's normalized metadata.
    authors: [Tamo Cholo Rafael Tandoc, Chua Zong Han Lionel, Nurul Shaidah, Poh Wen Lin Rachel, Lin Zhenming], 
-   departments: [~], 
+   departments: [Team 12], 
    size: "36x24", 
 
   // Institution logo.
@@ -460,11 +460,11 @@ supplement: "Figure",
 
 = Critical Assessment of the Original Visualization
 <critical-assessment-of-the-original-visualization>
-+ #strong[Lack of Contextual Annotatio];-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic. \
++ #strong[Lack of Contextual Annotation];-No annotations to explain major events affecting riderships, such as the COVID-19 pandemic. \
 + #strong[Minimal Color Differentiation] - MRT, LRT, and bus ridership segments are not distinct enough, making it difficult to differentiate between them. \
 + #strong[No percentage Change Indicators] - The chart displays raw numbers but lacks insights into year-over-year growth or decline. \
 + #strong[Limited Data Granularity] - Only annual data is presented, missing seasonal patterns or short-term ridership fluctuations. \
-+ #strong[Restricted Interactivity] - Users cannot filter data by transport mode or zoom into specific years for deeper analysis.
++ #strong[Axis in Time Series] - The original graph places years on the y-axis, which is unconventional for time series data. This reduces readability and makes it harder to identify patterns or trends over time
 
 = Suggested Improvement
 <suggested-improvement>
@@ -472,7 +472,7 @@ supplement: "Figure",
 + #strong[Improve Color Differentiation] - Use distinct, high-contrast colors for each transport mode to enhance readability.
 + #strong[Include Percentage Change] - Show year-over-year ridership variations for clearer trend analysis.
 + #strong[Increase Data Granularity] - Incorporate monthly or quarterly breakdowns to reveal seasonal patterns.
-+ #strong[Enhance Interactivity] - Enable filtering by transport mode and zooming into specific years for detailed insights.
++ #strong[Use Appropriate Time Axis] - Place time (years or months) on the x-axis instead of the y-axis to follow standard time series conventions. This improves readability and makes it easier to observe trends and temporal patterns.
 
 = Improved Visualization
 <improved-visualization>
@@ -491,23 +491,41 @@ supplement: "Figure",
 
 = Data Analysis
 <data-analysis>
-+ First dip due to first circut breaker (April 2020 to June 2020)
-+ Second dip due to reverted back to phase 2 alert due to Delta variant (May 2021 to July 2021)
+#strong[\1. Analysis of monthly ridership reveals strong alignment with major real-life events:]
+
+#block[
+#set enum(numbering: "a)", start: 1)
++ #strong[First significant dip] observed in April to June 2020, which aligns with Singapore’s Circuit Breaker period during the initial wave of COVID-19 restrictions.
+
++ #strong[Second dip] occurs between May to July 2021, corresponding with Singapore reverting to Phase 2 (Heightened Alert) due to the Delta variant outbreak.
+]
+
+These drops are not random but coincide with periods of restricted movement, remote working, and school closures.
+
+#strong[\2. Seasonal Effects and Monthly Trends]
+
+June and December has the lowest ridership aligning with school holidays when fewer students commute.Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December).
+
+#strong[\3. Year-over-Year Ridership Trends]
+
+Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure.
+
+This suggests lasting lifestyle shifts, such as hybrid work, remote learning, and flexible commuting patterns, have reduced the need for daily travel. Lifestyle changes brought by the pandemic continue to influence public transport usage, even as services recover and expand.
 
 = Further Improvements
 <further-improvements>
-+ Rachel suggest this.
-+ Lionel suggest this too.
-+ Shaidah suggest that.
-+ Cholo suggest that too.
-+ Edmund suggest what.
+To further enhance the analysis of public transport trends, incorporating additional data dimensions would be highly beneficial. For example, breaking down MRT data by individual train lines could reveal more detailed usage trends and highlight lines with greater variability, potentially linked to local demographics, major employment areas, or residential zones.
+
+Additionally, integrating age-related data would provide valuable insights into how different age groups adjusted their travel behavior over time—such as whether younger populations returned to public transport more quickly than seniors post-disruption.
 
 = Conclusion
 <conclusion>
-This is our amazing conclusion.
+The sparkline can effectively communicate the trend of a bivariate time series data (ridership across multiple transport mode in our case). Users can compare the similarity (or differences) of trends across the multiple categories, as well as visualize common anomality that affects all categories.
 
 = References
 <references>
 - The Straits Times. (2025). MRT, LRT ridership surpasses pre-COVID-19 levels for first time in 2024. The Straits Times. https:\/\/www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024
 
 - McKinsey & Company. (2021). Building a transport system that works: Insights from 25 global cities. McKinsey & Company. https:\/\/www.mckinsey.com/\~/media/mckinsey/business%20functions/operations/our%20insights/building%20a%20transport%20system%20that%20works%20new%20charts%20five%20insights%20from%20our%2025%20city%20report%20new/elements-of-success-urban-transportation-systems-of-25-global-cities-july-2021.pdf
+
+- The Straits Times. (2022). New Covid-19 rules kick in: Timeline of S’pore’s measures over the last 2 years. The Straits Times.https:\/\/www.straitstimes.com/singapore/two-years-of-twists-and-turns-a-timeline-of-singapores-covid-19-measures
