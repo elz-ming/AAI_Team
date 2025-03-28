@@ -68,23 +68,23 @@ a) **First significant dip** observed in April to June 2020, which aligns with S
 
 b) **Second dip** occurs between May to July 2021, corresponding with Singapore reverting to Phase 2 (Heightened Alert) due to the Delta variant outbreak.
 
-These drops are not random but coincide with periods of restricted movement, remote working, and school closures.
-
+These drops are not random but coincide with periods of restricted movement, remote working, and school closures.\
+\
 **2. Seasonal Effects and Monthly Trends**
 
-June and December has the lowest ridership aligning with school holidays when fewer students commute.Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December).
-
+June and December has the lowest ridership aligning with school holidays when fewer students commute. Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December).\
+\
 **3. Year-over-Year Ridership Trends**
 
-Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure.
-
+Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure.\
+\
 This suggests lasting lifestyle shifts, such as hybrid work, remote learning, and flexible commuting patterns, have reduced the need for daily travel. Lifestyle changes brought by the pandemic continue to influence public transport usage, even as services recover and expand.
 
 
 
 # Further Improvements
-To further enhance the analysis of public transport trends, incorporating additional data dimensions would be highly beneficial. For example, breaking down MRT data by individual train lines could reveal more detailed usage trends and highlight lines with greater variability, potentially linked to local demographics, major employment areas, or residential zones.
-
+To further enhance the analysis of public transport trends, incorporating additional data dimensions would be highly beneficial. For example, breaking down MRT data by individual train lines could reveal more detailed usage trends and highlight lines with greater variability, potentially linked to local demographics, major employment areas, or residential zones.\
+\
 Additionally, integrating age-related data would provide valuable insights into how different age groups adjusted their travel behavior over time—such as whether younger populations returned to public transport more quickly than seniors post-disruption.
 
 # Conclusion
