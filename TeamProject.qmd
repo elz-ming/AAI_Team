@@ -281,23 +281,23 @@ mrt_sparkline <- ggplot(mrt_data, aes(x = date, y = ridership)) +
              color = "#003838", size = 3) +
   # Annotate the start value
   geom_text(data = mrt_data %>% filter(date == min(date)),
-            aes(x = date, y = ridership, label = ridership),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 2, hjust = -0.1, color = "#4D4D4D", size = 3) +
   # Annotate the end value
   geom_text(data = mrt_data %>% filter(date == max(date)),
-            aes(x = date, y = ridership, label = ridership),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 2, hjust = 1.1, color = "#4D4D4D", size = 3) +
   # Add a vertical line and annotate the lowest value
   geom_vline(xintercept = mrt_data$date[which.min(mrt_data$ridership)],
              linetype = "dotted", color = "red") +
   geom_text(data = mrt_data %>% filter(date == mrt_data$date[which.min(mrt_data$ridership)]),
-            aes(x = date, y = ridership, label = round(ridership, 2)),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 3) +
   # Add a vertical line and annotate the lowest value in this range
   geom_vline(xintercept = lowest_date_in_range,
              linetype = "dotted", color = "orange") +
   geom_text(data = lowest_in_range,
-            aes(x = date, y = ridership, label = round(ridership, 2)),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 1, hjust = 1.1, color = "#4D4D4D", size = 3) +
   # Add Month annotations for specific points
   annotate("text", x = mrt_data$date[which.min(mrt_data$ridership)], y = 0, 
@@ -310,7 +310,7 @@ mrt_sparkline <- ggplot(mrt_data, aes(x = date, y = ridership)) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(labels = scales::comma) +
   theme_minimal() +
-  theme(axis.text.y = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.y = element_text(angle = 45, hjust = 1), panel.grid.major = element_line(color = "#C1C1C1"), panel.grid.minor = element_line(color = "#D2D2D2")) +
   coord_cartesian(clip = "off")
 
 # ---------------------------
@@ -333,21 +333,21 @@ bus_sparkline <- ggplot(bus_data, aes(x = date, y = ridership)) +
              aes(x = date, y = ridership),
              color = "#003838", size = 3) +
   geom_text(data = bus_data %>% filter(date == min(date)),
-            aes(x = date, y = ridership, label = ridership),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 2, hjust = -0.1, color = "#4D4D4D", size = 3) +
   geom_text(data = bus_data %>% filter(date == max(date)),
-            aes(x = date, y = ridership, label = ridership),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 2, hjust = 1.1, color = "#4D4D4D", size = 3) +
   geom_vline(xintercept = bus_data$date[which.min(bus_data$ridership)],
              linetype = "dotted", color = "red") +
   geom_text(data = bus_data %>% filter(date == bus_data$date[which.min(bus_data$ridership)]),
-            aes(x = date, y = ridership, label = round(ridership, 2)),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 3) +
   # Add a vertical line and annotate the lowest value in this range
   geom_vline(xintercept = lowest_date_in_range,
              linetype = "dotted", color = "orange") +
   geom_text(data = lowest_in_range,
-            aes(x = date, y = ridership, label = round(ridership, 2)),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 1, hjust = 1.1, color = "#4D4D4D", size = 3) +
   # Add Month annotations for specific points
   annotate("text", x = bus_data$date[which.min(bus_data$ridership)], y = 0, 
@@ -360,7 +360,7 @@ bus_sparkline <- ggplot(bus_data, aes(x = date, y = ridership)) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(labels = scales::comma) +
   theme_minimal() +
-  theme(axis.text.y = element_text(angle = 45, hjust = 1))+
+  theme(axis.text.y = element_text(angle = 45, hjust = 1), panel.grid.major = element_line(color = "#C1C1C1"), panel.grid.minor = element_line(color = "#D2D2D2"))+
   coord_cartesian(clip = "off")
 
 # ---------------------------
@@ -383,21 +383,21 @@ lrt_sparkline <- ggplot(lrt_data, aes(x = date, y = ridership)) +
              aes(x = date, y = ridership),
              color = "#003838", size = 3) +
   geom_text(data = lrt_data %>% filter(date == min(date)),
-            aes(x = date, y = ridership, label = ridership),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 2, hjust = -0.1, color = "#4D4D4D", size = 3) +
   geom_text(data = lrt_data %>% filter(date == max(date)),
-            aes(x = date, y = ridership, label = ridership),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 2, hjust = 1.1, color = "#4D4D4D", size = 3) +
   geom_vline(xintercept = lrt_data$date[which.min(lrt_data$ridership)],
              linetype = "dotted", color = "red") +
   geom_text(data = lrt_data %>% filter(date == lrt_data$date[which.min(lrt_data$ridership)]),
-            aes(x = date, y = ridership, label = round(ridership, 2)),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 1, hjust = -0.1, color = "#4D4D4D", size = 3) +
   # Add a vertical line and annotate the lowest value in this range
   geom_vline(xintercept = lowest_date_in_range,
              linetype = "dotted", color = "orange") +
   geom_text(data = lowest_in_range,
-            aes(x = date, y = ridership, label = round(ridership, 2)),
+            aes(x = date, y = ridership, label = scales::comma(ridership)),
             vjust = 1, hjust = 1.1, color = "#4D4D4D", size = 3) +
   # Add Month annotations for specific points
   annotate("text", x = lrt_data$date[which.min(lrt_data$ridership)], y = 0, 
@@ -410,7 +410,7 @@ lrt_sparkline <- ggplot(lrt_data, aes(x = date, y = ridership)) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   scale_y_continuous(labels = scales::comma) +
   theme_minimal() +
-  theme(axis.text.y = element_text(angle = 45, hjust = 1, margin = margin(r = 8))) +
+  theme(axis.text.y = element_text(angle = 45, hjust = 1, margin = margin(r = 8)), panel.grid.major = element_line(color = "#C1C1C1"), panel.grid.minor = element_line(color = "#D2D2D2")) +
   coord_cartesian(clip = "off")
 
 # ---------------------------
@@ -439,6 +439,10 @@ travel_table <- gt(travel_data) %>%
     Transport = "Transport Mode",
     Trend = "Trend (Sparkline)"
   ) %>%
+  tab_style(
+    style = cell_text(align = "center"),
+    locations = cells_column_labels(columns = "Trend")
+  ) %>%
   tab_header(title = "Public Transport Trends (Monthly Data)") %>%
   tab_options(
     table.width = pct(100),
@@ -446,7 +450,7 @@ travel_table <- gt(travel_data) %>%
   ) %>%
   # Add the legend as a source note at the bottom
   tab_source_note(
-    source_note = html("Legend: <span style='display:inline-block; width:10px; height:10px; background-color:red; margin-right:5px;'></span>low 1 | <span style='display:inline-block; width:10px; height:10px; background-color:yellow; margin-right:5px;'></span>low 2")
+    source_note = html("Legend: <span style='display:inline-block; width:10px; height:10px; background-color:#fa0404; margin-right:5px;'></span>Circuit Breaker | <span style='display:inline-block; width:10px; height:10px; background-color:#fba404; margin-right:5px;'></span>Phase 2 Revert")
   )
 
 
