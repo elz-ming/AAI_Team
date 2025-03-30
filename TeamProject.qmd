@@ -1,10 +1,10 @@
 ---
 title: "Singapore Ridership Analysis, by Team 12"
 author: 
-  - "Chua Zong Han Lionel"
+  - "Chua Zong Han, Lionel"
   - "Lin Zhenming"
   - "Nurul Shaidah Binti Mohamed Shaib"
-  - "Poh Weh Lin"
+  - "Poh Wen Lin Rachel"
   - "Tamo Cholo Rafael Tandoc"
   
 date: 2025-03-30
