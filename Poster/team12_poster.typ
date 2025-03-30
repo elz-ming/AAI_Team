@@ -23,10 +23,10 @@
 
 // Some quarto-specific definitions.
 
-#show raw.where(block: true): block.with(
-    fill: luma(230), 
-    width: 100%, 
-    inset: 8pt, 
+#show raw.where(block: true): set block(
+    fill: luma(230),
+    width: 100%,
+    inset: 8pt,
     radius: 2pt
   )
 
@@ -142,7 +142,7 @@
       new_title))
 
   block_with_new_content(old_callout,
-    new_title_block +
+    block(below: 0pt, new_title_block) +
     old_callout.body.children.at(1))
 }
 
@@ -361,6 +361,7 @@
   // Display the poster's contents.
   body
 }
+
 // Typst custom formats typically consist of a 'typst-template.typ' (which is
 // the source code for a typst template) and a 'typst-show.typ' which calls the
 // template's function (forwarding Pandoc metadata values as required)
@@ -436,7 +437,6 @@
   doc,
 )
 
-
 = Introduction
 <introduction>
 Public transport is essential for urban mobility in Singapore, serving millions daily. Understanding ridership trends is crucial for urban planning and policy making. Current visualizations highlight broad trends but lack context, interactivity, and data granularity. This project aims to enhance an existing ridership visualization by incorporating better color differentiation, trend indicators, and interactive elements to provide deeper insights into usage patterns.
@@ -446,7 +446,7 @@ Public transport is essential for urban mobility in Singapore, serving millions 
 A stacked bar chart published by The Straits Times (2025) presents annual ridership trends for MRT, LRT, and buses. While effectively conveys general trends, it lacks annotations, detailed breakdowns, and interactive features, making it harder to analyze fluctuations in riderships.
 
 #figure([
-#box(width: 120%,image("./images/figure_1.png"))
+#box(image("./images/figure_1.png", width: 85%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -490,7 +490,7 @@ supplement: "Figure",
 = Improved Visualization
 <improved-visualization>
 #figure([
-#box(image("./images/improved_visualisation.jpg"))
+#box(image("./images/improved_visualisation.jpg", width: 85%))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -499,6 +499,7 @@ Improved Visualization
 kind: "quarto-float-fig", 
 supplement: "Figure", 
 )
+<fig-2>
 
 
 = Data Analysis

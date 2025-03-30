@@ -22,7 +22,7 @@ Public transport is essential for urban mobility in Singapore, serving millions 
 A stacked bar chart published by The Straits Times (2025) presents annual ridership trends for MRT, LRT, and buses. While effectively conveys general trends, it lacks annotations, detailed breakdowns, and interactive features, making it harder to analyze fluctuations in riderships.
 
 ![[ Original Visualization from the Straits Times (2025)
-.](https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024)](./images/figure_1.png){#fig-1 width=120%}
+.](https://www.straitstimes.com/singapore/transport/mrt-lrt-ridership-surpasses-pre-covid-19-levels-for-first-time-in-2024)](./images/figure_1.png){#fig-1 width=85%}
 
 # Critical Assessment of the Original Visualization
 
@@ -57,7 +57,7 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 
 
 # Improved Visualization
-![Improved Visualization](./images/improved_visualisation.jpg)
+![Improved Visualization](./images/improved_visualisation.jpg){#fig-2 width=85%}
 
 
 # Data Analysis
