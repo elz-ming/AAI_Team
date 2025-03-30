@@ -248,9 +248,9 @@ kable(head(yearly_data))
 ```
 
 # Step 2 : Generate the Improved Visualization
-## 1.1 Old Visualization
+## 2.1 Old Visualization
 ::: {#fig1 style="text-align: center;"}
-![Figure 1: Original Visualization from the Straits Times (2025)](Data/figure_2.png){width=70%}
+![Figure 1: Original Visualization from the Straits Times (2025)](Poster/images/figure_1.png){width=70%}
 :::
 
 ## 2.2 Improved Visualization
