@@ -57,7 +57,7 @@ A stacked bar chart published by The Straits Times (2025) presents annual riders
 
 
 # Improved Visualization
-![Improved Visualization](./images/figure_2.png){#fig-2 width=95%}
+![Improved Visualization](./images/improved_visualisation.jpg)
 
 
 # Data Analysis

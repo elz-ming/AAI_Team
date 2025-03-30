@@ -35,6 +35,7 @@ library(corrplot)
 library(ggcorrplot)
 library(gt)
 library(dplyr)
+library(scales)
 
 ```
 
@@ -462,10 +463,6 @@ travel_table
 ## 3.1 Monthly Ridership Analysis
 
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(scales)  # for comma formatting
-
 # Filter and prepare the data
 compare_all_years <- monthly_data %>%
   filter(year >= 2019)
@@ -521,17 +518,7 @@ Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slig
 This suggests lasting lifestyle shifts, such as hybrid work, remote learning, and flexible commuting patterns, have reduced the need for daily travel. Lifestyle changes brought by the pandemic continue to influence public transport usage, even as services recover and expand.
 
 
-
-
-## 3.2 Infrastructure Expansion Correlation
-```{r}
-#| eval: true
-#| echo: true
-
-# TODO 5: Data analysis using yearly data
-```
-
-## 3.3 Impact of Alternative Transport Modes
+## 3.2 Impact of Alternative Transport Modes
 ```{r}
 #| eval: true
 #| echo: true
@@ -555,11 +542,9 @@ ggcorrplot(cor_matrix,
 
 ```
 
-## 3.4 Time Series Analysis
-```{r}
-#| eval: true
-#| echo: true
+In this section, we explored the hypothesis that a rise in Point-to-Point (P2P) transport usage could potentially reduce reliance on traditional public transport modes such as MRT, LRT, and public buses.
 
-# TODO 7: Data analysis using monthly data
-```
+To investigate this, we computed the correlation matrix between the average daily ridership across various transport modes, including MRT, LRT, public buses, and P2P transport. The results, visualized in the heatmap above, indicate strong positive correlations among all modes of transport.
+
+Contrary to the initial hypothesis, the data suggests that increased usage of P2P transport does not negatively correlate with public transport ridership. In fact, all transport modes, including P2P, appear to trend in the same direction, possibly reflecting broader trends in overall commuter activity rather than substitution between modes.
 

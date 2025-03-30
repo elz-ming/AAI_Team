@@ -23,10 +23,10 @@
 
 // Some quarto-specific definitions.
 
-#show raw.where(block: true): set block(
-    fill: luma(230),
-    width: 100%,
-    inset: 8pt,
+#show raw.where(block: true): block.with(
+    fill: luma(230), 
+    width: 100%, 
+    inset: 8pt, 
     radius: 2pt
   )
 
@@ -142,7 +142,7 @@
       new_title))
 
   block_with_new_content(old_callout,
-    block(below: 0pt, new_title_block) +
+    new_title_block +
     old_callout.body.children.at(1))
 }
 
@@ -361,7 +361,6 @@
   // Display the poster's contents.
   body
 }
-
 // Typst custom formats typically consist of a 'typst-template.typ' (which is
 // the source code for a typst template) and a 'typst-show.typ' which calls the
 // template's function (forwarding Pandoc metadata values as required)
@@ -437,6 +436,7 @@
   doc,
 )
 
+
 = Introduction
 <introduction>
 Public transport is essential for urban mobility in Singapore, serving millions daily. Understanding ridership trends is crucial for urban planning and policy making. Current visualizations highlight broad trends but lack context, interactivity, and data granularity. This project aims to enhance an existing ridership visualization by incorporating better color differentiation, trend indicators, and interactive elements to provide deeper insights into usage patterns.
@@ -446,7 +446,7 @@ Public transport is essential for urban mobility in Singapore, serving millions 
 A stacked bar chart published by The Straits Times (2025) presents annual ridership trends for MRT, LRT, and buses. While effectively conveys general trends, it lacks annotations, detailed breakdowns, and interactive features, making it harder to analyze fluctuations in riderships.
 
 #figure([
-#box(image("./images/figure_1.png", width: 120%))
+#box(width: 120%,image("./images/figure_1.png"))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -474,10 +474,23 @@ supplement: "Figure",
 + #strong[Increase Data Granularity] - Incorporate monthly or quarterly breakdowns to reveal seasonal patterns.
 + #strong[Use Appropriate Time Axis] - Place time (years or months) on the x-axis instead of the y-axis to follow standard time series conventions. This improves readability and makes it easier to observe trends and temporal patterns.
 
+= Implementation
+<implementation>
+- #strong[Data Sources:]
+  - #emph[Monthly Data (2019–2024)];: Contains monthly ridership figures over five years.
+  - #emph[Yearly Data (1990–2023)];: Includes annual ridership statistics spanning 33 years.
+- #strong[Data Cleaning – Monthly Data:]
+  - Split the combined `month` column (e.g., "Jan-19") into separate `Month` and `Year` columns for better temporal analysis.
+- #strong[Data Cleaning – Yearly Data:]
+  - Transposed the table for improved readability and analysis.
+  - Converted from wide to long format.
+  - Filtered records from 2018 onward to focus on more complete and relevant data.
+  - Converted ridership data from thousands to actual values by multiplying relevant columns by 1,000.
+
 = Improved Visualization
 <improved-visualization>
 #figure([
-#box(image("./images/figure_2.png", width: 100%))
+#box(image("./images/improved_visualisation.jpg"))
 ], caption: figure.caption(
 position: bottom, 
 [
@@ -486,7 +499,6 @@ Improved Visualization
 kind: "quarto-float-fig", 
 supplement: "Figure", 
 )
-<fig-2>
 
 
 = Data Analysis
@@ -500,22 +512,22 @@ supplement: "Figure",
 + #strong[Second dip] occurs between May to July 2021, corresponding with Singapore reverting to Phase 2 (Heightened Alert) due to the Delta variant outbreak.
 ]
 
-These drops are not random but coincide with periods of restricted movement, remote working, and school closures.
-
+These drops are not random but coincide with periods of restricted movement, remote working, and school closures. \
+\
 #strong[\2. Seasonal Effects and Monthly Trends]
 
-June and December has the lowest ridership aligning with school holidays when fewer students commute.Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December).
-
+June and December has the lowest ridership aligning with school holidays when fewer students commute. Ridership patterns align with Singapore’s school and work calendar, where demand drops during school holidays (June, December). \
+\
 #strong[\3. Year-over-Year Ridership Trends]
 
-Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure.
-
+Comparing 2019 (pre-COVID) and 2023 (post-COVID), ridership in 2023 remains slightly lower despite improvements in transport infrastructure. \
+\
 This suggests lasting lifestyle shifts, such as hybrid work, remote learning, and flexible commuting patterns, have reduced the need for daily travel. Lifestyle changes brought by the pandemic continue to influence public transport usage, even as services recover and expand.
 
 = Further Improvements
 <further-improvements>
-To further enhance the analysis of public transport trends, incorporating additional data dimensions would be highly beneficial. For example, breaking down MRT data by individual train lines could reveal more detailed usage trends and highlight lines with greater variability, potentially linked to local demographics, major employment areas, or residential zones.
-
+To further enhance the analysis of public transport trends, incorporating additional data dimensions would be highly beneficial. For example, breaking down MRT data by individual train lines could reveal more detailed usage trends and highlight lines with greater variability, potentially linked to local demographics, major employment areas, or residential zones. \
+\
 Additionally, integrating age-related data would provide valuable insights into how different age groups adjusted their travel behavior over time—such as whether younger populations returned to public transport more quickly than seniors post-disruption.
 
 = Conclusion
